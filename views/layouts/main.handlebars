@@ -3,16 +3,49 @@
 
 <head>
     <meta charset="utf-8">
-    <title>{{title}}</title>
+    {{!-- Page-specific title--}}
+    <title> {{title}} </title>
+    {{!-- Linking css file  --}}
     <link rel="stylesheet" href="/public/css/main.css">
 </head>
 
 <body>
 
+    {{!-- Header section --}}
+    <header>
+        <img src="/public/images/pokemon-logo.png" alt="Pokémon Logo">
+    </header>
+
+    <!-- Navigation bar container -->
+    <div class="nav-container">
+        <!-- Navigation bar w/ links to different pages of the app -->
+        <nav>
+            <a href="/home"><button>Home</button></a>
+            <a href="/profile"><button>Profile</button></a>
+            <a href="/encyclopedia"><button>Encyclopedia</button></a>
+            <a href="/builder"><button>Team Builder</button></a>
+            <a href="/trivia"><button>Trivia</button></a>
+            <a href="/pokemon"><button>Who’s That Pokémon</button></a>
+        </nav>
+    </div>
+
+    <!-- Main content area where page-specific content is injected -->
     <main>
         {{{body}}}
     </main>
 
-</body>
+    <!-- JavaScript to set active class on the current page's button -->
+    <script>
+        const currentPath = window.location.pathname;
+        const navButtons = document.querySelectorAll('nav a');
+        navButtons.forEach(anchor => {
+            const buttonLink = anchor.getAttribute('href');
+            if (buttonLink === currentPath) {
+                anchor.querySelector('button').classList.add('active');
+            }
+        });
+    </script>
 
+</body>
 </html>
+
