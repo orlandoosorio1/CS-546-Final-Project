@@ -69,3 +69,42 @@ nav button.active::after {
 }
 
 
+
+
+.intro {
+    text-align: center;
+    padding-top: 20px;
+}
+.intro h1 {
+    font-size: 2.5em;
+    color: #e4d26b; /* Golden color for a standout heading */
+    padding-bottom: 10px;
+}
+.intro p {
+    font-size: 1.2em;
+    color: #F0F4EF; /* Lighter shade for subtext */
+    margin: 0;
+}
+
+
+.features {
+    padding-top: 20px;
+    padding-left: 75px;
+}
+.section-title {
+    font-size: 2em;
+    margin-bottom: 30px;
+    color: #e4d26b; /* Matches the intro title color */
+}
+.feature-title {
+    font-size: 1.2em;
+    color: #e4d26b; /* Golden color for titles */
+    margin-bottom: 10px;
+}
+.feature p {
+    font-size: 1em;
+    line-height: 1.5;
+    margin: 0;
+    color: #F0F4EF;
+    padding-bottom: 25px;
+}
