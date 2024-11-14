@@ -1,31 +1,47 @@
-/* Base background for the application */
+/* Reset some default styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* Base background and font */
 body {
     background-color: #255a86;
     font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+    color: #F0F4EF;
 }
-/* Header styling*/
-header {
-    background-color: #ce353f; 
-    border-bottom: 5px solid #F0F4EF;
-    padding: 10px;
-    box-sizing: border-box;
-    margin-bottom: 40px;
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.5);
-}
-header img {
-    max-width: 125px;
-    height: auto;
-    padding-top: 5px;
-    padding-left: 5px;
-}
-/* Centering container for the navigation bar */
-.nav-container {
-    display: flex;
-    justify-content: center; 
+/* Full-width container for sections */
+.container {
     width: 100%;
+    max-width: 1500px; /* Constrain container width for large screens */
+    margin: 0 auto;
+    padding: 0 20px; /* Side padding for alignment */
 }
+/* Header styling for full-width with left-aligned image */
+header {
+    width: 100%;
+    background-color: #ce353f; 
+    padding: 10px 20px;
+    border-bottom: 5px solid #F0F4EF;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+/* Header image positioned in the top-left corner */
+header img {
+    max-width: 150px;
+    height: auto;
+}
+/* Navigation container and alignment */
+.nav-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+}
+
 /* Navigation bar styling */
 nav {
     display: inline-flex;
@@ -34,7 +50,7 @@ nav {
     padding: 20px 100px; 
     background-color: #F0F4EF;
     border-radius: 10px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.5);
 }
 /* Navigation button styling */
 nav button {
@@ -45,6 +61,7 @@ nav button {
     font-family: inherit; 
     font-weight: bold;
     position: relative;
+    transition: color 0.3s ease;
 }
 /* Navigation button active styling */
 nav button:hover,
@@ -67,44 +84,12 @@ nav button:hover::after,
 nav button.active::after {
     transform: scaleX(1);
 }
-
-
-
-
-.intro {
-    text-align: center;
-    padding-top: 20px;
-}
-.intro h1 {
-    font-size: 2.5em;
-    color: #e4d26b; /* Golden color for a standout heading */
-    padding-bottom: 10px;
-}
-.intro p {
-    font-size: 1.2em;
-    color: #F0F4EF; /* Lighter shade for subtext */
-    margin: 0;
-}
-
-
-.features {
-    padding-top: 20px;
-    padding-left: 75px;
-}
-.section-title {
-    font-size: 2em;
-    margin-bottom: 30px;
-    color: #e4d26b; /* Matches the intro title color */
-}
-.feature-title {
-    font-size: 1.2em;
-    color: #e4d26b; /* Golden color for titles */
-    margin-bottom: 10px;
-}
-.feature p {
-    font-size: 1em;
-    line-height: 1.5;
-    margin: 0;
-    color: #F0F4EF;
-    padding-bottom: 25px;
+/* Main content styling */
+.main-content {
+    display: flex;
+    justify-content: center;
+    max-width: 100%;
+    padding: 40px 20px;
+    margin: 0 auto;
+    text-align: center; /* Center content for consistency */
 }
