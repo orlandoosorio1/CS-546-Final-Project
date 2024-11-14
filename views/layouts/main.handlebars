@@ -5,20 +5,18 @@
     <meta charset="utf-8">
     {{!-- Page-specific title--}}
     <title> {{title}} </title>
-    {{!-- Linking css file  --}}
+    {{!-- Linking css file's  --}}
     <link rel="stylesheet" href="/public/css/main.css">
+    <link rel="stylesheet" href="/public/css/home.css">
 </head>
 
 <body>
-
-    {{!-- Header section --}}
+    <!-- Full-width container -->
     <header>
         <img src="/public/images/pokemon-logo.png" alt="Pokémon Logo">
     </header>
-
-    <!-- Navigation bar container -->
-    <div class="nav-container">
-        <!-- Navigation bar w/ links to different pages of the app -->
+    <!-- Navigation bar inside container -->
+    <div class="container nav-container">
         <nav>
             <a href="/home"><button>Home</button></a>
             <a href="/profile"><button>Profile</button></a>
@@ -28,12 +26,10 @@
             <a href="/pokemon"><button>Who’s That Pokémon</button></a>
         </nav>
     </div>
-
-    <!-- Main content area where page-specific content is injected -->
-    <main>
+    <!-- Main content area inside container -->
+    <div class="container main-content">
         {{{body}}}
     </main>
-
     <!-- JavaScript to set active class on the current page's button -->
     <script>
         const currentPath = window.location.pathname;
@@ -45,7 +41,6 @@
             }
         });
     </script>
-
 </body>
 </html>
 
