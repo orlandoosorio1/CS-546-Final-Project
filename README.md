@@ -1,17 +1,23 @@
 # CS-546-Final-Project
 
-Orlando 11/12/2024 3:30 PM Changes:
 
-- Did not change data folder.
+Orlando Updates as of 11/14/2024:
+
+- Once you have cloned and pulled the repo:
+    - Make sure to "npm install" first
+    -  View for '/' is not configured -> Maybe use that for log-in page?
+ 
+
+- Data folder
+    - No progress so far.
 - Public folder
-    + Added pokemon logo
-    + Added css styling for pages and navigation bar as well as buttons.
+    - Started to separate css files by page.
+    - Images are in /Public/images
 - Routes folder
-    + Configured initial routes.
-    + Made a route for each page (Home, Profile, Encyclopedia, Team Builder, Trivia, Who's That Pokemon)
-    + Set up GET method for each route
-    + Rendered each based with individual HTML doc.
+    - A route for each page:
+        - "/home", "/profile", "/encyclopedia", "/trivia", "/builder", "/pokemon" (who's that pokemon)
 - Views folder
-    + Made html doc for each page (Home, Profile, Encyclopedia, Team Builder, Trivia, Who's That Pokemon)
-    + main.handlebars is set to be our main layout.
-    + Every other html doc wil be injected into main.handlebars
+    - main.handlebars is our rendered as our main layout
+    - Finished home.handlebars -> could be modified if it's not good
+    - No progress on any other pages
+
