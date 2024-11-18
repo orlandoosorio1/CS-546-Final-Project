@@ -20,6 +20,7 @@
   "homepage": "https://github.com/orlandoosorio1/CS-546-Final-Project#readme",
   "dependencies": {
     "express": "^4.21.1",
-    "express-handlebars": "^8.0.1"
+    "express-handlebars": "^8.0.1",
+    "mongodb": "^6.10.0"
   }
 }
