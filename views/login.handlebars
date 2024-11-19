@@ -1,0 +1,28 @@
+<h1>Welcome</h1>
+<div class="form-container">
+    <!-- Login Form -->
+    <form action="/" method="POST" class="login-form active">
+        <h2>Log In</h2>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit">Log In</button>
+        <button type="button" id="show-signup">Create Account</button>
+    </form>
+
+    <!-- Create Account Form -->
+    <form action="/signup" method="POST" class="signup-form">
+        <h2>Create Account</h2>
+        <label for="signup-username">Username:</label>
+        <input type="text" id="signup-username" name="username" required>
+        <label for="signup-password">Password:</label>
+        <input type="password" id="signup-password" name="password" required>
+        <label for="signup-confirm-password">Confirm Password:</label>
+        <input type="password" id="signup-confirm-password" name="confirmPassword" required>
+        <button type="submit">Create Account</button>
+        <button type="button" id="show-login">Back to Log In</button>
+    </form>
+</div>
+
+<a href="/home" class="continue-link">Continue without logging in</a>
