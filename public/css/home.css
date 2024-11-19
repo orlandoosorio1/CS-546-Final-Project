@@ -1,110 +1,104 @@
 /* Home Section Wrapper */
 .home-section {
     display: flex;
-    justify-content: center;
+    justify-content: space-between; 
+    align-items: center;
     width: 100%;
     padding: 20px;
     box-sizing: border-box;
+    gap: 50px;
 }
-/* Content Wrapper for Left and Right Sections */
-.home-content-wrapper {
-    display: flex;
-    width: 100%;
-    max-width: 1200px; /* Sets max width for readability */
-    margin: 0 auto;
-    gap: 30px;
-}
-/* Left Section Styling */
+/* Left Section */
 .left-section {
-    flex: 0 0 35%; /* Fixed to take up 35% of the container */
-    max-width: 35%; /* Ensures the left section doesn’t exceed 35% */
+    flex: 0 0 35%; /* 35% of the width */
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
-}
-/* Intro Text Styling */
-.intro {
-    width: 100%;
     text-align: left;
-    padding: 10px;
+}
+.intro {
+    margin-bottom: 20px;
 }
 .intro h1 {
-    font-size: 1.5em;
+    font-size: 1.8em;
     margin-bottom: 10px;
-    color: #F0F4EF;
-    padding-bottom: 25px;
 }
 .intro p {
     font-size: 1em;
     color: #F0F4EF;
 }
-/* Intro Image Styling */
 .intro-image {
-    display: flex;
-    justify-content: center;
-    margin-top: 70px;
-    width: 100%;
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    max-width: 60%; 
+    margin: 0 auto; 
 }
 .intro-image img {
-    max-width: 80%;
+    max-width: 100%; 
     height: auto;
-    border-radius: 10px;
 }
-/* Features Section (Right Container) Styling */
+/* Features Section */
 .features {
-    flex: 0 0 65%; /* Fixed to take up 65% of the container */
-    max-width: 65%; /* Ensures the right section doesn’t exceed 65% */
+    flex: 0 0 65%; 
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Creates two equal columns */
-    grid-template-rows: 1fr 1fr; /* Creates two equal rows */
-    gap: 20px;
+    grid-template-columns: repeat(2, 1fr); 
+    row-gap: 20px; 
+    column-gap: 0px;
+    justify-content: center;
+    align-content: center; 
     width: 100%;
     box-sizing: border-box;
 }
-/* 878080 */
+/* Individual Feature Styling */
 .feature {
-    background-color: #F0F4EF; /* Light background color */
-    border-radius: 20px; /* Rounded corners */
-    display: flex;  
+    background-color: #F0F4EF; 
+    border-radius: 20px;
+    height: 150px;
+    max-width: 80%;
+    display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
     color: #878080;
-    height: 150px; /* Set a consistent height for all feature boxes */
-    transition: all 0.3s ease; /* Smooth transition */
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.5); 
+    transition: all 0.3s ease; 
+    overflow: hidden; 
 }
-/* Feature Title Styling (Centered by Flexbox) */
-.feature .feature-title {
-    color: #878080;
+/* Feature Title */
+.feature-title {
     font-size: 1.5em;
-    text-align: center;
-    position: absolute; /* Allows it to move freely within the feature box */
-    transition: all 0.3s ease; /* Smooth transition for positioning */
-    top: 50%; /* Centered vertically */
-    left: 50%; /* Centered horizontally */
-    transform: translate(-50%, -50%); /* Centers the title */
-}
-/* Hide Paragraph Text Initially */
-.feature p {
-    display: none; /* Hide paragraph text by default */
     color: #878080;
-    font-size: 1em;
-    text-align: center;
-    transition: opacity 0.3s ease; /* Smooth fade-in effect */
-}
-/* Hover Effect */
-.feature:hover .feature-title {
-    top: 10px; /* Moves title to the top */
-    left: 10px; /* Moves title to the left */
-    transform: translate(0, 0); /* Removes centering transform */
-    font-size: 1.3em; /* Slightly reduce font size when in the top-left */
-}
-.feature:hover p {
-    display: block; /* Show paragraph text on hover */
-    opacity: 1; /* Fade in the paragraph text */
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* Center paragraph text */
+    transform: translate(-50%, -50%); 
+    transition: all 0.3s ease; 
+    text-align: center;
+    margin: 0;
+}
+/* Feature Description (Initially Hidden) */
+.feature p {
+    display: none; 
+    font-size: 1em;
+    color: #878080;
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0; 
+    transition: opacity 0.3s ease;
+}
+/* Hover Effects */
+.feature:hover .feature-title {
+    top: 10px;
+    left: 10px;
+    transform: translate(0, 0); 
+    font-size: 1.3em; 
+}
+.feature:hover p {
+    display: block;
+    opacity: 1; 
 }
