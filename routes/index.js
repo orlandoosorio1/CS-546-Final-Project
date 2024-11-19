@@ -4,9 +4,10 @@ import triviaRoutes from './trivia.js';
 import pokemonRoutes from './pokemon.js';
 import encyclopediaRoutes from './encyclopedia.js';
 import builderRoutes from './builder.js';
-
+import loginRoutes from './login.js';
 
 const constructorMethod = (app) => {
+    app.use('/', loginRoutes);
     app.use('/home', homeRoutes);
     app.use('/profile', profileRoutes);
     app.use('/trivia', triviaRoutes);
