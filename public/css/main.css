@@ -36,7 +36,7 @@ header {
     gap: 10px;
 }
 /* Buttons */
-.login-button,
+.logout-button,
 nav button {
     display: inline-block;
     font-family: inherit;
@@ -45,14 +45,14 @@ nav button {
     cursor: pointer;
     transition: all 0.3s ease;
 }
-.login-button {
+.logout-button {
     background-color: #F0F4EF;
     color: #ce353f;
     text-decoration: none;
     padding: 10px 15px;
     border-radius: 10px;
 }
-.login-button:hover {
+.logout-button:hover {
     background-color: #be5252;
     color: #fff;
 }
