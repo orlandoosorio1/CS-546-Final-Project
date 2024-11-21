@@ -1,31 +1,61 @@
-import express from 'express';  // Import Express framework
-const app = express();  // Initialize Express app
-import configRoutes from './routes/index.js';   // Import app routes
-import exphbs from 'express-handlebars';    // Import Handlebars for templating
+import express from 'express';
+import exphbs from 'express-handlebars';
+import session from 'express-session';
+import configRoutes from './routes/index.js';
 
+const app = express();
+
+// Middleware to allow PUT/DELETE requests via _method in forms
 const rewriteUnsupportedBrowserMethods = (req, res, next) => {
-  // If the user posts to the server with a property called _method, rewrite the request's method
-  // To be that method; so if they post _method=PUT you can now allow browsers to POST to a route that gets
-  // rewritten in this middleware to a PUT route
   if (req.body && req.body._method) {
     req.method = req.body._method;
     delete req.body._method;
   }
-  // let the next middleware run:
   next();
 };
 
-app.use('/public', express.static('public'));   // Serve static files from 'public'
-app.use(express.json());    // Parse JSON data
-app.use(express.urlencoded({extended: true}));  // Parse URL-encoded data
-app.use(rewriteUnsupportedBrowserMethods);  // Enable PUT/DELETE 
+// Serve static files (e.g., CSS, JS, images) from the "public" directory
+app.use('/public', express.static('public'));
 
-app.engine('handlebars', exphbs.engine({defaultLayout: 'main'}));   // Set Handlebars with main layout
-app.set('view engine', 'handlebars');   // Set Handlebars as view engine
+// Configure session for user authentication
+app.use(
+  session({
+    name: 'AuthCookie',
+    secret: 'secretkey',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 1000 * 60 * 60 * 24 }, // Session cookie lasts 1 day
+  })
+);
 
-configRoutes(app);  // Configure app routes
+// Make session user data available in all templates
+app.use((req, res, next) => {
+  res.locals.user = req.session.user || null; // `user` is accessible in Handlebars
+  next();
+});
 
-// Start server on port 3000
+// Redirect unauthenticated users to the login page
+app.use((req, res, next) => {
+  const publicRoutes = ['/', '/login', '/signup'];
+  if (!publicRoutes.includes(req.path) && !req.session.user) {
+    return res.redirect('/'); // Block access to private routes
+  }
+  next();
+});
+
+// Parse JSON and URL-encoded data in request bodies
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(rewriteUnsupportedBrowserMethods); // Enable custom method overrides
+
+// Set up Handlebars view engine with a default layout
+app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }));
+app.set('view engine', 'handlebars');
+
+// Initialize application routes
+configRoutes(app);
+
+// Start the server
 app.listen(3000, () => {
   console.log("We've now got a server!");
   console.log('Your routes will be running on http://localhost:3000');
