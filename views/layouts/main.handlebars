@@ -13,8 +13,9 @@
             <img src="/public/images/pokemon-logo.png" alt="Pokémon Logo">
         </div>
         <div class="header-right">
-            <form action="/" method="GET">
-                <button type="submit" class="login-button">Log In</button>
+            <span>Welcome, {{user.username}}</span>
+            <form action="/logout" method="GET">
+                <button type="submit" class="logout-button">Log Out</button>
             </form>
         </div>
     </header>
