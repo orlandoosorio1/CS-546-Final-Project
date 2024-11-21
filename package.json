@@ -19,8 +19,10 @@
   },
   "homepage": "https://github.com/orlandoosorio1/CS-546-Final-Project#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "express": "^4.21.1",
     "express-handlebars": "^8.0.1",
+    "express-session": "^1.18.1",
     "mongodb": "^6.10.0"
   }
 }
