@@ -12,7 +12,9 @@ let populateDatabase = async () => {
         // the first step is to check if the pokemon collection is already populated and if not then we populate else we don't
         let count = await pokemonCollection.countDocuments();
         // if its filled, we're good
-        if(count >0 ){
+        if(count > 0){
+            let samplePokemon = await pokemonCollection.find({}).limit(5).toArray();
+            console.log(samplePokemon);
             return;
         }
         // if we are here, the database is not filled and now we need to get the first 151 pokemon and fill the database
@@ -53,6 +55,9 @@ let populateDatabase = async () => {
         // now, finally, add all pokemon to the database
         pokemonCollection.insertMany(finalPokemon);
         console.log("Pokemon added to database.")
+        // try testing by getting example pokemon
+        let samplePokemon = await pokemonCollection.find({}).limit(5).toArray();
+        console.log(samplePokemon);
  
     }catch(error){
         console.error(error.message);
