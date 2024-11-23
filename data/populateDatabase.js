@@ -18,15 +18,41 @@ let populateDatabase = async () => {
         // if we are here, the database is not filled and now we need to get the first 151 pokemon and fill the database
         // first step - make the request to the axios endpoint and then get the initial list
         let {data} = await axios.get(endpoint);
-        console.log(data);
         // now, considering that this returns a list of objects for each pokemon and the url to get the data for each pokemon, 
-        // we now have to iterate through each object, grab the url, make a get request to it, get its info, and make an object
+        // we now have to iterate through keach object, grab the url, make a get request to it, get its info, and make an object
         // and then store all thsoe objects inside an array to then put into the database
+        
+        // define list of objects that will be put into the database
+        let finalPokemon = [];
         for (let obj of data.results){
-            let {name, url} = obj;
-            let {data: pokemonData} = await axios.get(url);
-            console.log(pokemonData);
+            let {url} = obj;
+            let {data: {name, abilities, types, cries, moves, ...restInfo}} = await axios.get(url);
+            let newObj = {name, abilities, types, cries, moves};
+            // moves requires more code because it has objects and list of objects nested inside it. 
+            // we can do this by creating a function
+            let processedMoves = moves.map(moveEntry => {
+                // extract the move name and the url
+                let moveName = moveEntry.move.name;
+                let moveUrl = moveEntry.move.url;
+                // now extract version group details
+                let versionDetails = moveEntry.version_group_details.map(detail => ({
+                    levelLearnedAt: detail.levelLearnedAt, 
+                    moveLearnMethod: detail.move_learn_method.name, 
+                    versionGroupName: detail.version_group_name 
+                }))
+                return {
+                    moveName, 
+                    moveUrl, 
+                    versionDetails
+                };
+            })
+            newObj.moves = processedMoves;
+            finalPokemon.push(newObj);
         }
+        // console.log(finalPokemon);
+        // now, finally, add all pokemon to the database
+        pokemonCollection.insertMany(finalPokemon);
+        console.log("Pokemon added to database.")
  
     }catch(error){
         console.error(error.message);
