@@ -3,6 +3,10 @@ import exphbs from 'express-handlebars';
 import session from 'express-session';
 import configRoutes from './routes/index.js';
 import populateDatabase from './data/populateDatabase.js';
+
+// delete these imports
+import * as pokeFunc from "./data/pokemon.js";
+
 const app = express();
 
 // Middleware to allow PUT/DELETE requests via _method in forms
@@ -55,6 +59,8 @@ app.set('view engine', 'handlebars');
 // Initialize application routes
 configRoutes(app);
 populateDatabase();
+let ans = await pokeFunc.getPokemonByType("grass");
+console.log(JSON.stringify(ans), null, 2);
 // Start the server
 app.listen(3000, () => {
   console.log("We've now got a server!");

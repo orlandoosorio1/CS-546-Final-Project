@@ -14,7 +14,7 @@ let populateDatabase = async () => {
         // if its filled, we're good
         if(count > 0){
             let samplePokemon = await pokemonCollection.find({}).limit(5).toArray();
-            console.log(samplePokemon);
+            //console.log(samplePokemon);
             return;
         }
         // if we are here, the database is not filled and now we need to get the first 151 pokemon and fill the database
