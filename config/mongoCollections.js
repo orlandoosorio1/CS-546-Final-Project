@@ -13,6 +13,7 @@ const getCollectionFn = (collection) => {
   };
 };
 
+export const pokemon = getCollectionFn('pokemon');
 export const teams = getCollectionFn('teams');
 export const users = getCollectionFn('users');
 

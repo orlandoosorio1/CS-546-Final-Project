@@ -2,7 +2,7 @@ import express from 'express';
 import exphbs from 'express-handlebars';
 import session from 'express-session';
 import configRoutes from './routes/index.js';
-
+import populateDatabase from './data/populateDatabase.js';
 const app = express();
 
 // Middleware to allow PUT/DELETE requests via _method in forms
@@ -54,7 +54,7 @@ app.set('view engine', 'handlebars');
 
 // Initialize application routes
 configRoutes(app);
-
+populateDatabase();
 // Start the server
 app.listen(3000, () => {
   console.log("We've now got a server!");
