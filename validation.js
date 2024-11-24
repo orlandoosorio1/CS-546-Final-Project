@@ -20,6 +20,18 @@ const exportedMethods = {
     if (!isNaN(strVal))
       throw `Error: ${strVal} is not a valid value for ${varName} as it only contains digits`;
     return strVal;
+  },
+
+  checkStringList(strList, varName){
+    if(!strList) throw `Error: You must supply a ${varNam}!`;
+    if(!Array.isArray(strList)) throw `Error: ${varName} must be a list!`;
+    return strList.map((str, index) => {
+      try{
+        return this.checkString(str, `${varName}[${index}]`)
+      }catch(error){
+        throw `Error in ${varName}[${index}]`;
+      }
+    })
   }
 };
 
