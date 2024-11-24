@@ -60,7 +60,7 @@ app.set('view engine', 'handlebars');
 configRoutes(app);
 populateDatabase();
 let ans = await pokeFunc.getPokemonByType("grass");
-console.log(JSON.stringify(ans), null, 2);
+console.log(ans);
 // Start the server
 app.listen(3000, () => {
   console.log("We've now got a server!");

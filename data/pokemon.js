@@ -26,7 +26,7 @@ export const getPokemonByType = async (type) => {
         type = validation.checkString(type, "Type").toLowerCase();
         // now query the database and return the pokemon
         let pokemonCollection = await pokemon();
-        let queriedPokemon = await pokemonCollection.find({"types.name": type}).toArray();
+        let queriedPokemon = await pokemonCollection.find({"types.type.name": type}).toArray();
         if(queriedPokemon){
             return queriedPokemon;
         }
