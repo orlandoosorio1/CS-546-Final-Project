@@ -21,7 +21,12 @@ const exportedMethods = {
       throw `Error: ${strVal} is not a valid value for ${varName} as it only contains digits`;
     return strVal;
   },
-
+  checkNumber(numVal, varName){
+    if (typeof numVal !== "number" || !Number.isInteger(numVal)) {
+      throw `Error: '${varName}' is not a valid number or integer.`;
+    }
+    return numVal;
+  },
   checkStringList(strList, varName){
     if(!strList) throw `Error: You must supply a ${varNam}!`;
     if(!Array.isArray(strList)) throw `Error: ${varName} must be a list!`;
