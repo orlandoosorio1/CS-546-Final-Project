@@ -6,9 +6,9 @@
 }
 /* Base Styles */
 body {
-    background-color: #255a86;
-    font-family: Arial, sans-serif;
-    color: #F0F4EF;
+    background-color: #FEF5EF;
+    font-family: 'Montserrat', sans-serif;
+    color: #292929;
 }
 .container {
     max-width: 1500px;
@@ -21,7 +21,7 @@ header {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    background-color: #ce353f;
+    background: linear-gradient(to right, #FF4B2B, #FF416C); /* Apply gradient */
     padding: 10px 20px;
     border-bottom: 5px solid #F0F4EF;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);

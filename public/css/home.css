@@ -26,7 +26,7 @@
 }
 .intro p {
     font-size: 1em;
-    color: #F0F4EF;
+    color: #292929;
 }
 .intro-image {
     display: flex; 
@@ -80,25 +80,22 @@
 }
 /* Feature Description (Initially Hidden) */
 .feature p {
-    display: none; 
-    font-size: 1em;
-    color: #878080;
-    text-align: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0; 
-    transition: opacity 0.3s ease;
+    display: block; /* Ensure it's part of the DOM */
+    opacity: 0; /* Initially hidden */
+    visibility: hidden; /* Not visible initially */
+    transform: scale(0.95); /* Slightly shrink for smoother effect */
+    transition: opacity 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), 
+                visibility 0.5s, 
+                transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smooth easing */
 }
 /* Hover Effects */
 .feature:hover .feature-title {
-    top: 10px;
-    left: 10px;
-    transform: translate(0, 0); 
-    font-size: 1.3em; 
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), visibility 0.5s;
 }
 .feature:hover p {
-    display: block;
-    opacity: 1; 
+    opacity: 1; /* Fade in the description */
+    visibility: visible; /* Make it interactable */
+    transform: scale(1); /* Return to normal size */
 }
