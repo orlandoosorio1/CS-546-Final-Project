@@ -20,25 +20,31 @@ router.post('/login', async (req, res) => {
     try {
         help.checkString(username, 'Username');
         help.checkString(password, 'Password');
-    } catch (e) {
-        res.status(400).render('auth', {
+    } catch (error) {
+        console.error('Login error:', error);
+        return res.status(400).render('auth', {
             layout: 'auth',
-            title: 'Log In',
-            error: e,
+            title: 'Authentication',
+            loginError: error,
+            activePanel: 'login',
         });
     }
     try {
         const user = await usersData.findUserByUsername(username); // Fetch user
         const passwordMatch = await bcrypt.compare(password, user.password); // Validate password
-
         if (!passwordMatch) {
             throw 'Error: Invalid username or password.';
         }
-
         req.session.user = { username: user.username }; // Set session
         res.redirect('/home'); // Redirect to home on success
     } catch (error) {
         console.error('Login error:', error);
+        return res.status(400).render('auth', {
+            layout: 'auth',
+            title: 'Authentication',
+            loginError: error,
+            activePanel: 'login',
+        });
     }
 });
 
@@ -47,13 +53,15 @@ router.post('/signup', async (req, res) => {
     const { username, password } = req.body;
     // Ensure all fields are provided and valid
     try {
-        help.checkString(username, 'Username');
-        help.checkString(password, 'Password');
-    } catch (e) {
-        res.status(400).render('auth', {
+        help.checkUsername(username, 'Username');
+        help.checkPassword(password, 'Password');
+    } catch (error) {
+        console.error('Signup error:', error);
+        return res.status(400).render('auth', {
             layout: 'auth',
-            title: 'Sign Up',
-            error: e,
+            title: 'Authentication',
+            signupError: error,
+            activePanel: 'signup',
         });
     }
     // Set favPokemon to "Unknown" by default
@@ -64,13 +72,19 @@ router.post('/signup', async (req, res) => {
         res.redirect('/home'); // Redirect to home on success
     } catch (error) {
         console.error('Signup error:', error);
+        return res.status(400).render('auth', {
+            layout: 'auth',
+            title: 'Authentication',
+            signupError: error,
+            activePanel: 'signup',
+        });
     }
 });
 
 // Logout - Destroy session and redirect to root page
 router.get('/logout', (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
+    req.session.destroy((error) => {
+        if (error) {
             return res.status(500).send('Could not log out.');
         }
         res.redirect('/'); // Redirect to root page
