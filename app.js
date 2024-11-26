@@ -52,8 +52,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(rewriteUnsupportedBrowserMethods); // Enable custom method overrides
 
-// Set up Handlebars view engine with a default layout
-app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }));
+// Configure Handlebars view engine with helpers
+const hbs = exphbs.create({
+  defaultLayout: 'main',
+  helpers: {
+    eq: (a, b) => a === b, // Define the "eq" helper
+  },
+});
+app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
 // Initialize application routes
