@@ -10,7 +10,6 @@ const exportedMethods = {
     if (!ObjectId.isValid(id)) throw 'Error: invalid object ID';
     return id;
   },
-
   checkString(strVal, varName) {
     if (!strVal) throw `Error: You must supply a ${varName}!`;
     if (typeof strVal !== 'string') throw `Error: ${varName} must be a string!`;
@@ -37,6 +36,33 @@ const exportedMethods = {
         throw `Error in ${varName}[${index}]`;
       }
     })
+  },
+  checkUsername(username) {
+    username = this.checkString(username, 'Username');
+    const usernameRegex = /^[a-zA-Z0-9_]{4,20}$/; // Only alphanumeric and underscores, 4-20 characters
+    if (!usernameRegex.test(username)) {
+      throw 'Error: Username must be 4-20 characters long and contain only letters, numbers, or underscores.';
+    }
+    return username;
+  },
+  checkPassword(password) {
+    password = this.checkString(password, 'Password');
+    if (password.length < 8) {
+      throw 'Error: Password must be at least 8 characters long.';
+    }
+    if (!/[A-Z]/.test(password)) {
+      throw 'Error: Password must contain at least one uppercase letter.';
+    }
+    if (!/[a-z]/.test(password)) {
+      throw 'Error: Password must contain at least one lowercase letter.';
+    }
+    if (!/[0-9]/.test(password)) {
+      throw 'Error: Password must contain at least one digit.';
+    }
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      throw 'Error: Password must contain at least one special character.';
+    }
+    return password;
   }
 };
 
