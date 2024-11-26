@@ -8,8 +8,8 @@ const saltRounds = 10;
 // Function to create a new user
 export const createUser = async (username, password, favPokemon) => {
   // Verify parameters
-  username = help.checkString(username, 'username');
-  password = help.checkString(password, 'password');
+  username = help.checkUsername(username);
+  password = help.checkPassword(password);
   favPokemon = help.checkString(favPokemon, 'favPokemon');
   const userCollection = await users();
   // Check if the username already exists
