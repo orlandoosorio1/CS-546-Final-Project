@@ -59,7 +59,7 @@ const exportedMethods = {
     if (!/[0-9]/.test(password)) {
       throw 'Error: Password must contain at least one digit.';
     }
-    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+    if (!/[!-_@#$%^&*(),.?":{}|<>]/.test(password)) {
       throw 'Error: Password must contain at least one special character.';
     }
     return password;
