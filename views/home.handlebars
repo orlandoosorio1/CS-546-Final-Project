@@ -32,13 +32,27 @@
         <div class="leaderboard">
             <h2>Top 20 Trivia Players</h2>
             <ol>
-                <li>Empty</li>
+                {{#each triviaLeaderboard}}
+                <li>
+                    <span>{{this.username}}</span>
+                    <span class="score">{{this.triviaScore}} Points</span>
+                </li>
+                {{else}}
+                <li>No players available</li>
+                {{/each}}
             </ol>
         </div>
         <div class="leaderboard">
             <h2>Top 20 Who's That Pokémon Players</h2>
             <ol>
-                <li>Empty</li>
+                {{#each pokemonLeaderboard}}
+                <li>
+                    <span>{{this.username}}</span>
+                    <span class="score">{{this.whosThatPokeScore}} Points</span>
+                </li>
+                {{else}}
+                <li>No players available</li>
+                {{/each}}
             </ol>
         </div>
     </section>
