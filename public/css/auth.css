@@ -212,3 +212,14 @@ footer a {
     color: #3c97bf;
     text-decoration: none;
 }
+.error-message {
+    color: #ce353f; /* Error color */
+    background-color: #fce4e4; /* Light error background */
+    border: 1px solid #f5c6cb; /* Border color for error */
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 0.9em;
+}
+

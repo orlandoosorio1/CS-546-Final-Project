@@ -1,24 +1,29 @@
-/* Home Section Wrapper */
+.main-content {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 20px ;
+    display: flex;
+    flex-direction: column; /* Stack sections vertically */
+    gap: 20px; /* Add spacing between sections */
+    box-sizing: border-box;
+}
+/* Home Section */
 .home-section {
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
+    gap: 25px;
     align-items: center;
     width: 100%;
     padding: 20px;
     box-sizing: border-box;
-    gap: 50px;
 }
-/* Left Section */
 .left-section {
-    flex: 0 0 35%; /* 35% of the width */
+    flex: 0 0 35%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: left;
-}
-.intro {
-    margin-bottom: 20px;
 }
 .intro h1 {
     font-size: 1.8em;
@@ -27,6 +32,7 @@
 .intro p {
     font-size: 1em;
     color: #292929;
+    margin-bottom: 20px;
 }
 .intro-image {
     display: flex; 
@@ -36,66 +42,89 @@
     margin: 0 auto; 
 }
 .intro-image img {
-    max-width: 100%; 
+    max-width: 100%;
     height: auto;
 }
-/* Features Section */
 .features {
-    flex: 0 0 65%; 
+    flex: 0 0 65%;
     display: grid;
-    grid-template-columns: repeat(2, 1fr); 
-    row-gap: 20px; 
-    column-gap: 0px;
-    justify-content: center;
-    align-content: center; 
-    width: 100%;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
     box-sizing: border-box;
 }
-/* Individual Feature Styling */
 .feature {
-    background-color: #F0F4EF; 
+    background-color: #F0F4EF;
     border-radius: 20px;
     height: 150px;
-    max-width: 80%;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
     color: #878080;
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.5); 
-    transition: all 0.3s ease; 
-    overflow: hidden; 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    transition: all 0.3s ease;
 }
-/* Feature Title */
 .feature-title {
     font-size: 1.5em;
     color: #878080;
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); 
-    transition: all 0.3s ease; 
-    text-align: center;
+    transform: translate(-50%, -50%);
     margin: 0;
+    transition: all 0.3s ease;
 }
-/* Feature Description (Initially Hidden) */
 .feature p {
-    display: block; /* Ensure it's part of the DOM */
-    opacity: 0; /* Initially hidden */
-    visibility: hidden; /* Not visible initially */
-    transform: scale(0.95); /* Slightly shrink for smoother effect */
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.95);
     transition: opacity 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), 
                 visibility 0.5s, 
-                transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smooth easing */
+                transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
-/* Hover Effects */
 .feature:hover .feature-title {
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), visibility 0.5s;
 }
 .feature:hover p {
-    opacity: 1; /* Fade in the description */
-    visibility: visible; /* Make it interactable */
-    transform: scale(1); /* Return to normal size */
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
 }
+/* Leaderboard Section */
+.leaderboard-section {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding-top: 50px;
+    box-sizing: border-box;
+    width: 100%;
+}
+.leaderboard {
+    flex: 1;
+    background-color: #F0F4EF;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 45%;
+}
+.leaderboard h2 {
+    font-size: 1.5em;
+    color: #292929;
+    margin-bottom: 15px;
+}
+.leaderboard ol {
+    list-style-type: decimal;
+    padding-left: 20px;
+    text-align: left;
+}
+.leaderboard li {
+    margin-bottom: 10px;
+    color: #878080;
+}
+
+
+
