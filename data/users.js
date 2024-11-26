@@ -111,3 +111,25 @@ export const addTeamToUser = async (id, teamId) => {
   return await getUserById(id);
 };
 
+// Functions to get top players
+export const triviaTopPlayers = async (limit = 20) => {
+  const userCollection = await users();
+  const topPlayers = await userCollection
+  .find({}, { projection: { username: 1, triviaScore: 1 } }) // Select only username and triviaPoints
+  .sort({ triviaScore: -1 }) // Sort by triviaPoints in descending order
+  .limit(limit)
+  .toArray(); // Limit to top `limit` users
+  return topPlayers;
+
+};
+export const pokemonTopPlayers = async (limit = 20) => {
+  const userCollection = await users();
+  const topPlayers = await userCollection
+    .find({}, { projection: { username: 1, whosThatPokeScore: 1 } }) // Select only username and pokemonPoints
+    .sort({ whosThatPokeScore: -1 }) // Sort by pokemonPoints in descending order
+    .limit(limit)
+    .toArray(); // Limit to top `limit` users
+  return topPlayers;
+};
+
+
