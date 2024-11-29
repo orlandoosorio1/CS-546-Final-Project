@@ -63,6 +63,19 @@ export const findUserByUsername = async (username) => {
   return user;
 };
 
+export const updateUserProfile = async (username, updateData) => {
+  const userCollection = await users();
+  const updateInfo = await userCollection.updateOne(
+      { username: username.toLowerCase() },
+      { $set: updateData }
+  );
+  if (!updateInfo.matchedCount || !updateInfo.modifiedCount) {
+      throw new Error('Failed to update profile.');
+  }
+  return await userCollection.findOne({ username: username.toLowerCase() });
+};
+
+
 // Function to update a user's trivia score
 export const updateTriviaScore = async (id, newScore) => {
   id = help.checkId(id);
