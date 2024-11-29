@@ -1,0 +1,119 @@
+/* Profile Section */
+.profile-container {
+    background-color: #F0F4EF;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    padding: 40px;
+    text-align: center;
+    margin-top: 40px;
+    max-width: 800px;
+    margin: 40px auto;
+}
+
+.profile-container h1 {
+    font-size: 2.5rem;
+    color: #BE5252;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.profile-details {
+    margin: 20px 0;
+    text-align: left;
+}
+
+.profile-details p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #292929;
+}
+
+.profile-details p strong {
+    color: #BE5252;
+}
+
+.profile-actions {
+    margin-top: 30px;
+}
+
+.profile-actions button {
+    background-color: #FF416C;
+    color: #fff;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.profile-actions button:hover {
+    background-color: #FF4B2B;
+}
+
+
+
+
+
+
+
+
+/* Setup Page */
+.setup-container {
+    background-color: #F0F4EF;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    padding: 40px;
+    margin-top: 40px;
+    max-width: 600px;
+    margin: 40px auto;
+    text-align: center;
+}
+
+.setup-container h1 {
+    font-size: 2.5rem;
+    color: #BE5252;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.setup-form {
+    margin-top: 20px;
+}
+
+.setup-form label {
+    display: block;
+    font-size: 1.1rem;
+    color: #292929;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+.setup-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #BE5252;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.setup-form button {
+    background-color: #FF416C;
+    color: #fff;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.setup-form button:hover {
+    background-color: #FF4B2B;
+}
