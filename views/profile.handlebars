@@ -3,5 +3,20 @@
  User profile page where users can view and edit their details (date of birth, age, favorite Pokémon, and saved teams).
 
  --}}
-
-  <p> This is the profile page.</p>
+<main class="profile-container">
+    <link rel="stylesheet" href="/public/css/profile.css">
+    <section class="profile-view">
+        <h1>Your Profile</h1>
+        <div class="profile-details">
+            <p><strong>Username:</strong> {{user.username}}</p>
+            <p><strong>Date of Birth:</strong> {{user.dob}}</p>
+            <p><strong>Age:</strong> {{user.age}}</p>
+            <p><strong>Favorite Pokémon:</strong> {{user.favoritePokemon}}</p>
+        </div>
+        <div class="profile-actions">
+            <form action="/profile/edit" method="GET">
+                <button type="submit">Edit Profile</button>
+            </form>
+        </div>
+    </section>
+</main>
