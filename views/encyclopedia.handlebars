@@ -1,14 +1,39 @@
-{{!-- 
-
- Pokemon Encyclopedia page allowing users to search and view information about Pokémon
-    + Stats, abilities, and evolution paths. 
-
- --}}
-
-
- <p> This is the encyclopedia page.</p>
-
-
-
-
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Encyclopedia</title>
+    <link rel="stylesheet" href="/public/css/encyclopedia.css">
+</head>
+<body>
+    <div class="encyclopedia">
+        <h1 class="page-title">Pokémon Encyclopedia</h1>
+        <div class="search-container">
+            <input id="search-input" class="search-bar" type="text" placeholder="Search Pokémon by name..." />
+            <button id="search-button" class="search-button">Search</button>
+            <select id="type-filter" class="filter-dropdown">
+                <option value="">Filter by Type</option>
+                <option value="normal">Normal</option>
+                <option value="fire">Fire</option>
+                <option value="water">Water</option>
+                <option value="grass">Grass</option>
+                <option value="electric">Electric</option>
+                <option value="ice">Ice</option>
+                <option value="fighting">Fighting</option>
+                <option value="poison">Poison</option>
+                <option value="ground">Ground</option>
+                <option value="flying">Flying</option>
+                <option value="psychic">Psychic</option>
+                <option value="bug">Bug</option>
+                <option value="rock">Rock</option>
+                <option value="ghost">Ghost</option>
+                <option value="dragon">Dragon</option>
+            </select>
+        </div>
+        <div id="results-grid" class="results-grid">
+        </div>
+    </div>
+    <script src="/public/js/encyclopedia.js"></script>
+</body>
+</html>
