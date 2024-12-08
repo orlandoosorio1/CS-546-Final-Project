@@ -4,5 +4,211 @@ Team Builder page where users can select and save their ideal Pokémon team.
 Could also allow users to view, edit, and save up to three teams.
 
  --}}
+<main class="team-builder-container">
+    <div class="team-builder-content">
+        <div class="team-builder-box">
+            <img src="/public/images/logo.png" alt="Pokémon Team Builder Logo" class="team-builder-logo">
+            <h1>Build Your Pokémon Team</h1>
+            <h2>Select Pokémon</h2>
+            <div id="pokemon-list" class="pokemon-list">
+                <!-- Pokémon rows will be dynamically rendered here -->
+            </div>
+            <div class="pagination-controls">
+                <button id="prev-page" class="pagination-button" disabled>Previous</button>
+                <span id="page-indicator"></span>
+                <button id="next-page" class="pagination-button">Next</button>
+            </div>
+            <h2>Your Team (Max: 6 Pokémon)</h2>
+            <div id="team-preview" class="team-preview">
+                <p>No Pokémon selected yet.</p>
+            </div>
+            <button id="save-team" class="save-button">Save Team</button>
+        </div>
+    </div>
+</main>
+<script>
+    const pokemonList = document.getElementById('pokemon-list');
+    const teamPreview = document.getElementById('team-preview');
+    const saveButton = document.getElementById('save-team');
+    const prevPageButton = document.getElementById('prev-page');
+    const nextPageButton = document.getElementById('next-page');
+    const pageIndicator = document.getElementById('page-indicator');
 
-  <p> This is the team builder page.</p>
+    let selectedTeam = [];
+    let groupedPokemon = [];
+    let currentPage = 0;
+
+    const colours = {
+        //SOURCE FOR COLORS: https://gist.github.com/apaleslimghost/0d25ec801ca4fc43317bcff298af43c3
+        normal: '#A8A77A',
+        fire: '#EE8130',
+        water: '#6390F0',
+        electric: '#F7D02C',
+        grass: '#7AC74C',
+        ice: '#96D9D6',
+        fighting: '#C22E28',
+        poison: '#A33EA1',
+        ground: '#E2BF65',
+        flying: '#A98FF3',
+        psychic: '#F95587',
+        bug: '#A6B91A',
+        rock: '#B6A136',
+        ghost: '#735797',
+        dragon: '#6F35FC',
+        dark: '#705746',
+        steel: '#B7B7CE',
+        fairy: '#D685AD',
+    };
+
+    const fetchPokemonData = async () => {
+        try {
+            const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=151');
+            const data = await response.json();
+
+            const pokemonPromises = data.results.map(async (pokemon) => {
+                const res = await fetch(pokemon.url);
+                const details = await res.json();
+                const speciesRes = await fetch(details.species.url);
+                const speciesData = await speciesRes.json();
+
+                const evolutionRes = await fetch(speciesData.evolution_chain.url);
+                const evolutionData = await evolutionRes.json();
+
+                return {
+                    name: details.name,
+                    image: details.sprites.front_default,
+                    types: details.types.map((t) => t.type.name),
+                    evolutions: getEvolutionChain(evolutionData.chain),
+                };
+            });
+
+            const pokemonDetails = await Promise.all(pokemonPromises);
+
+            groupedPokemon = groupByEvolution(pokemonDetails);
+            renderPage(0);
+        } catch (error) {
+            console.error('Error fetching Pokémon data:', error);
+        }
+    };
+
+    const getEvolutionChain = (chain) => {
+        const evolutions = [];
+        let current = chain;
+        while (current) {
+            evolutions.push(current.species.name);
+            current = current.evolves_to[0] || null;
+        }
+        return evolutions;
+    };
+
+    const groupByEvolution = (pokemonDetails) => {
+        const grouped = [];
+        const evolutionMap = {};
+
+        pokemonDetails.forEach((pokemon) => {
+            const firstEvolution = pokemon.evolutions[0];
+            if (!evolutionMap[firstEvolution]) {
+                evolutionMap[firstEvolution] = [];
+            }
+            evolutionMap[firstEvolution].push(pokemon);
+        });
+
+        Object.values(evolutionMap).forEach((group) => {
+            grouped.push(group);
+        });
+
+        return grouped;
+    };
+
+    const renderPage = (page) => {
+        pokemonList.innerHTML = '';
+
+        const startIndex = page * 10;
+        const endIndex = startIndex + 10;
+        const pokemonSubset = groupedPokemon.slice(startIndex, endIndex);
+
+        pokemonSubset.forEach((group) => {
+            const row = group
+                .map(
+                    (pokemon) => `
+                    <div class="pokemon-card" onclick="addToTeam('${pokemon.name}', '${pokemon.image}', '${pokemon.types}')">
+                        <img src="${pokemon.image}" alt="${pokemon.name}">
+                        <h3>${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}</h3>
+                        <div class="pokemon-types">
+                            ${pokemon.types
+                                .map(
+                                    (type) =>
+                                        `<span class="pokemon-type-box" style="background-color: ${colours[type] || '#777'};">${type.charAt(0).toUpperCase() + type.slice(1)}</span>`
+                                )
+                                .join('')}
+                        </div>
+                    </div>
+                `
+                )
+                .join('');
+
+            pokemonList.innerHTML += `<div class="pokemon-row">${row}</div>`;
+        });
+
+        updatePaginationControls(page);
+    };
+
+    const updatePaginationControls = (page) => {
+        pageIndicator.textContent = `Page ${page + 1} of ${Math.ceil(groupedPokemon.length / 10)}`;
+        prevPageButton.disabled = page === 0;
+        nextPageButton.disabled = page >= Math.ceil(groupedPokemon.length / 10) - 1;
+    };
+
+    function addToTeam(name, image, types) {
+        if (selectedTeam.length >= 6) {
+            alert('You can only select up to 6 Pokémon.');
+            return;
+        }
+        if (selectedTeam.some((pokemon) => pokemon.name === name)) {
+            alert(`${name.charAt(0).toUpperCase() + name.slice(1)} is already in your team.`);
+            return;
+        }
+
+        selectedTeam.push({ name, image, types });
+        updateTeamPreview();
+    }
+
+    function updateTeamPreview() {
+        if (selectedTeam.length === 0) {
+            teamPreview.innerHTML = '<p>No Pokémon selected yet.</p>';
+        } else {
+            teamPreview.innerHTML = selectedTeam
+                .map(
+                    (pokemon) => `
+                    <div class="team-member">
+                        <img src="${pokemon.image}" alt="${pokemon.name}">
+                        <h3>${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}</h3>
+                        <p>${pokemon.types}</p>
+                    </div>
+                `
+                )
+                .join('');
+        }
+    }
+
+    prevPageButton.addEventListener('click', () => {
+        if (currentPage > 0) {
+            currentPage--;
+            renderPage(currentPage);
+        }
+    });
+
+    nextPageButton.addEventListener('click', () => {
+        if (currentPage < Math.ceil(groupedPokemon.length / 10) - 1) {
+            currentPage++;
+            renderPage(currentPage);
+        }
+    });
+
+    saveButton.addEventListener('click', () => {
+        console.log('Saved team:', selectedTeam);
+        alert('Team saved successfully!');
+    });
+
+    fetchPokemonData();
+</script>
