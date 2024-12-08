@@ -57,13 +57,13 @@ router.post('/edit', async (req, res) => {
             return res.redirect('/'); // Redirect to login page if not logged in
         }
 
-        const { dob, age, favoritePokemon } = req.body;
+        const { dob, age, favPokemon } = req.body;
 
         // Update the user's profile
         const updatedUser = await usersData.updateUserProfile(req.session.user.username, {
             dob,
             age: parseInt(age),
-            favoritePokemon
+            favPokemon
         });
 
         if (!updatedUser) {
