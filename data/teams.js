@@ -12,7 +12,7 @@ export const createTeam = async (userId, name, pokemon) => {
         // now that the inputs are validated, we have to create a new object and put it inside mongo
         let newTeam = {userId: userId, name: name, pokemon: pokemon};
         // now, add the team to mongo collection
-        let teams = await teams();
+        let teamCollection = await teams();
         const insertInfo = await teamCollection.insertOne(newTeam);
         if (!insertInfo.acknowledged || !insertInfo.insertedId) throw 'Could not add team';
         // return inserted team
