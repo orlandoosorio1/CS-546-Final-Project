@@ -1,7 +1,7 @@
 import { teams } from '../config/mongoCollections.js';
 import { ObjectId } from 'mongodb';
 import * as pokeData from "./pokemon.js";
-import validation from './validation.js';
+import validation from '../validation.js';
 
 export const createTeam = async (userId, name, pokemon) => {
     try{
