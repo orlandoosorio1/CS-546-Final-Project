@@ -1,86 +1,63 @@
-
-<main class="pokemon-who-quiz-container">
-    <link rel="stylesheet" href="/public/css/pokemonquiz.css">
-
-    <h1>Who's That Pokémon?</h1>
-    <p>Can you guess the Pokémon based on its silhouette?</p>
-    <div class="pokemon-image-container">
-        <!-- Background Image -->
-        <img 
-            src="/public/images/whopoke2.png" 
-            alt="Background Image" 
-            class="pokemon-back"
-        />
-
-        <!-- Silhouette Image -->
-        <img 
-            id="pokemonSilhouette" 
-            src="{{silhouetteUrl}}" 
-            alt="Pokémon Silhouette" 
-            class="pokemon-silhouette"
-        />
-    </div>
-
-    <!-- Quiz Answer Form -->
-    <form id="pokemonAnswerForm" class="pokemon-answer-form">
-        <label for="pokemonGuess" class="pokemon-guess-label">Your Answer:</label>
-        <input 
-            type="text" 
-            id="pokemonGuess" 
-            name="pokemonGuess" 
-            placeholder="Enter Pokémon Name" 
-            >
-        <button type="button" id="submitGuess" class="submit-button">Submit</button>
-    </form>
-
-    <div id="resultMessage" class="result-message"></div>
-    <button id="playAgainButton" class="play-again-button" style="display: none;">Play Again</button>
-</main>
+.pokemon-Who-quiz-container {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    margin-top: 20px;
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat;
+}
+.pokemon-back {
+    position: absolute;
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); /* Center the image */
+    width: 600px;
+    height: 450px; 
+    object-fit: cover; 
+}
 
 
-<script>
-    let correctPokemon = '';
 
-    const pokemonSilhouette = document.getElementById('pokemonSilhouette');
-    const pokemonGuessInput = document.getElementById('pokemonGuess');
-    const submitGuessButton = document.getElementById('submitGuess');
-    const resultMessage = document.getElementById('resultMessage');
-    const playAgainButton = document.getElementById('playAgainButton');
+.pokemon-silhouette {
+    position: absolute; 
+    top: 50%; 
+    left: 45%; 
+    transform: translate(-50%, -50%); 
+    width: 300px;
+    height: 300px;
+    object-fit: contain; 
+    filter: brightness(0) contrast(200%); /* Apply silhouette effect */
+    z-index: 2; /* Ensure it layers above the background */
+}
 
-    // Fetch and display a random Pokémon
-    const fetchRandomPokemon = async () => {
-        try {
-            const randomId = Math.floor(Math.random() * 151) + 1; // Original 151 Pokémon
-            const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomId}`);
-            const pokemonData = await response.json();
+.pokemon-answer-form {
+    margin-top: 20px;
+}
 
-            correctPokemon = pokemonData.name.toLowerCase();
-            pokemonSilhouette.src = pokemonData.sprites.front_default;
+.pokemon-guess-label {
+    font-size: 18px;
+    margin-right: 10px;
+}
 
-            pokemonSilhouette.style.filter = 'brightness(0%)';
-            resultMessage.textContent = '';
-            resultMessage.style.color = '';
-            playAgainButton.style.display = 'none';
-        } catch (error) {
-            console.error('Error fetching Pokémon:', error);
-        }
-    };
+.pokemon-answer-form input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
 
-    // Check the user's guess
-    const checkGuess = () => {
-        const userGuess = pokemonGuessInput.value.trim().toLowerCase();
-        if (userGuess === correctPokemon) {
-            resultMessage.textContent = 'Correct! 🎉';
-            resultMessage.style.color = 'green';
-            pokemonSilhouette.style.filter = 'none';
-            playAgainButton.style.display = 'block';
-        } else {
-            resultMessage.textContent = 'Wrong! Try again.';
-            resultMessage.style.color = 'red';
-        }
-    };
-    submitGuessButton.addEventListener('click', checkGuess);
-    playAgainButton.addEventListener('click', fetchRandomPokemon);
+.pokemon-answer-form button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-    fetchRandomPokemon();
-</script>
+.pokemon-answer-form button:hover {
+    background-color: #0056b3;
+}
