@@ -56,4 +56,50 @@
             </ol>
         </div>
     </section>
+
+
+    <script>
+    const updateLeaderboard = async () => {
+  try {
+    const response = await fetch('/leaderboard'); // Fetch the leaderboard data
+    if (response.ok) {
+      const { triviaLeaderboard, pokemonLeaderboard } = await response.json();
+
+      // Update Trivia Leaderboard
+      const triviaList = document.querySelector('.leaderboard:nth-of-type(1) ol');
+      triviaList.innerHTML = ''; // Clear existing trivia leaderboard
+
+      triviaLeaderboard.forEach((player) => {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `
+          <span>${player.username}</span>
+          <span class="score">${player.triviaScore} Points</span>
+        `;
+        triviaList.appendChild(listItem);
+      });
+
+      // Update Pokémon Leaderboard
+      const pokemonList = document.querySelector('.leaderboard:nth-of-type(2) ol');
+      pokemonList.innerHTML = ''; // Clear existing Pokémon leaderboard
+
+      pokemonLeaderboard.forEach((player) => {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `
+          <span>${player.username}</span>
+          <span class="score">${player.whosThatPokeScore} Points</span>
+        `;
+        pokemonList.appendChild(listItem);
+      });
+    } else {
+      console.error('Failed to fetch leaderboard.');
+    }
+  } catch (error) {
+    console.error('Error updating leaderboard:', error);
+  }
+};
+document.addEventListener('DOMContentLoaded', updateLeaderboard);
+
+  </script>
+
+  
 </main>
