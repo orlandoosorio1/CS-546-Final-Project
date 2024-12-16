@@ -1,7 +1,9 @@
 import { Router } from 'express';
-const router = Router();
 
 // Render the main Who's That Pokémon page
+const router = Router();
+
+
 router.get('/', (req, res) => {
   res.render('whosthatpokemon', { title: "Who's That Pokémon" });
 });
@@ -16,7 +18,5 @@ router.get('/quiz', (req, res) => {
     res.status(500).send("An error occurred while loading the quiz page.");
   }
 });
-
-
 
 export default router;

@@ -1,10 +1,17 @@
-{{!--
-
-Trivia Game page for the quiz-based feature, with randomized questions on Pokémon stats, types, and moves. 
-
-  --}}
-
-
-
-
- <p> This is the trivia page.</p>
+<section class = "trivia-quiz-container">
+  <h1>Pokémon Trivia</h1>
+  <p>Test your Pokémon knowledge by answering questions about Pokémon</p>
+  <link rel="stylesheet" href="/public/css/triviaquiz.css">
+  <form action="/trivia/quiz" method="GET" class="trivia-quiz-form">
+    <input
+      type="image"
+      src="/public/images/pokemon-starters.png"
+      alt="Take the Quiz!"
+      class = "quiz-image-button"
+      id="saveForm"
+    />
+  </form>
+  <p class="quiz-instruction">
+        Click the button above to begin the quiz and test your Pokémon skills!
+    </p>
+</section>

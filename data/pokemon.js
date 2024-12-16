@@ -38,4 +38,26 @@ export const getPokemonByType = async (type) => {
     }
 }
 
+export const getRandomPokemonByCount = async (count) => {
+    try{
+        count = validation.checkNumber(count, "Count");
+        // now query database and return that many pokemon as in count after randomizing them
+        let pokemonCollection = await pokemon();
+        let queriedPokemon = await pokemonCollection.aggregate([
+            {$sample: {size: count}}
+        ]).toArray();
+        // now, check if the database returned values
+        if (queriedPokemon && queriedPokemon.length > 0){
+            return queriedPokemon;
+        }
+        else{
+            console.log("No Pokemon found");
+            return [];
+        }
+    }catch(error){
+        console.error(error.message);
+        throw error;
+    }
+};
+
 

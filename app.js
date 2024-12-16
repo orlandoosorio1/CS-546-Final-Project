@@ -51,7 +51,8 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(rewriteUnsupportedBrowserMethods); // Enable custom method overrides
-
+// Initialize application routes
+configRoutes(app);
 // Configure Handlebars view engine with helpers
 const hbs = exphbs.create({
   defaultLayout: 'main',
@@ -62,11 +63,12 @@ const hbs = exphbs.create({
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
-// Initialize application routes
-configRoutes(app);
+
 populateDatabase();
 let ans = await pokeFunc.getPokemonByType("grass");
-console.log(ans);
+//console.log(ans);
+let printTest = await pokeFunc.getRandomPokemonByCount(1);
+console.log(printTest);
 // Start the server
 app.listen(3000, () => {
   console.log("We've now got a server!");

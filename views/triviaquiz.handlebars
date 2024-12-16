@@ -1,0 +1,22 @@
+<main class="pokemon-trivia-quiz-container">
+    <link rel="stylesheet" href="/public/css/triviaquiz.css">
+    <h1>Pokémon Trivia</h1>
+    <p>Can you guess the Pokémon based on some information?</p>
+    <div class="pokemon-question-container">
+        <h2 id="pokemon-trivia-question"></h2>
+    </div>
+    <form id="triviaAnswerForm" class="trivia-answer-form">
+        <label for="triviaGuess" class="trivia-guess-label">Your Answer:</label>
+        <input 
+            type="text" 
+            id="triviaGuess" 
+            name="triviaGuess" 
+            placeholder="Enter Pokémon Name" 
+            >
+        <button type="button" id="submitGuess" class="submit-button">Submit</button>
+    </form>
+
+    <div id="resultMessage" class="result-message"></div>
+    <button id="playAgainButton" class="play-again-button" style="display: none;">Play Again</button>
+</main>
+<script type="module" src="../public/js/triviaQuiz.js"/>
