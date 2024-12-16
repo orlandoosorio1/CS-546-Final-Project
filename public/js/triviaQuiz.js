@@ -8,6 +8,8 @@
     // Fetch Pokémon and set up the question
     const fetchPokemonAndSetQuestion = async () => {
         try {
+            pokemonGuessInput.value = "";  
+            resultMessage.textContent = ""; 
             // Fetch Pokémon from the backend
             let response = await fetch('/trivia/getRandomPokemonByCount', {
                 method: 'POST',
@@ -20,10 +22,23 @@
             if(pokemonList){
                 let pokemon = pokemonList[0];
                 console.log("Data function loaded!");
+                console.log(pokemon);
                 // Extract abilities, types, and moves
-                let abilities = pokemon.abilities.map(obj => obj.ability.name.toLowerCase());
-                let types = pokemon.types.map(obj => obj.type.name.toLowerCase());
-                let moves = pokemon.moves.map(obj => obj.move.name.toLowerCase());
+                let abilities = []
+                for(let obj of pokemon.abilities){
+                    abilities.push(obj.ability.name);
+                }
+                console.log(abilities);
+                let types = []
+                for(let obj of pokemon.types){
+                    types.push(obj.type.name);
+                }
+                console.log(types);
+                let moves = []
+                for(let obj of pokemon.moves){
+                    moves.push(obj.moveName);
+                }
+                console.log(moves);
 
                 // Randomly select a question type
                 let randomNumber = Math.floor(Math.random() * 3);
