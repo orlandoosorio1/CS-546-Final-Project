@@ -1,26 +1,39 @@
 import { teams } from '../config/mongoCollections.js';
+import { addTeamToUser } from './users.js';
 import { ObjectId } from 'mongodb';
 import * as pokeData from "./pokemon.js";
 import validation from '../validation.js';
 
 export const createTeam = async (userId, name, pokemon) => {
-    try{
-        // the first step is to validate all inputs
-        userId = validation.checkId(userId);
+    try {
+        // Validate and convert userId to ObjectId
+        const userObjectId = new ObjectId(validation.checkId(userId));
+        // Validate other inputs
         name = validation.checkString(name, "Name");
         pokemon = validation.checkList(pokemon, "Pokemon");
-        // now that the inputs are validated, we have to create a new object and put it inside mongo
-        let newTeam = {userId: userId, name: name, pokemon: pokemon};
-        // now, add the team to mongo collection
+        // Create the team object
+        const newTeam = { 
+            userId: userObjectId,
+            name: name, 
+            pokemon: pokemon 
+        };
+        // Insert the team into the collection
         let teamCollection = await teams();
         const insertInfo = await teamCollection.insertOne(newTeam);
-        if (!insertInfo.acknowledged || !insertInfo.insertedId) throw 'Could not add team';
-        // return inserted team
+        if (!insertInfo.acknowledged || !insertInfo.insertedId) 
+            throw 'Could not add team';
+        // Add the team ID to the user
+        await addTeamToUser(new ObjectId(userId), insertInfo.insertedId.toString());
+        // Return the created team
         return await getTeamById(insertInfo.insertedId.toString());
-    }catch(error){
-        console.error(error.message);
-    };
+
+    } catch (error) {
+        console.error("Error in createTeam:", error.message);
+        throw error;
+    }
 };
+
+
 
 export const getTeamById = async (id) => {
     id = validation.checkId(id);
@@ -44,7 +57,7 @@ export const editTeam = async (teamId, userId, name, pokemon) => {
         if(!team) throw 'No team found with that ID';
         // now, update the team
         let updateInfo = await teamCollection.findOneAndUpdate(
-            { _id: new ObjectId(id) },
+            { _id: new ObjectId(teamId)},
             { $set: {userId: userId, name: name, pokemon: pokemon} },
             { returnDocument: 'after' }
           );
@@ -54,6 +67,7 @@ export const editTeam = async (teamId, userId, name, pokemon) => {
 
     }catch(error){
         console.error(error.message);
+        throw error;
     };
 };
 
@@ -69,30 +83,27 @@ export const deleteTeam = async (teamId) => {
 
     }catch(error){
         console.error(error.message);
+        throw error;
     };
 };
 
 
 export const getTeamsByUserId = async (userId) => {
-    try{
-        // first validate the userId
-        userId = validation.checkId(userId);
-        // then, get the collection
+    try {
+        //CONVERT USER ID INTO OBJECT
+        const userObjectId = new ObjectId(userId);
+        //fetch collection
         let teamCollection = await teams();
-        // find all teams from the database with the userId
-        let userTeams = await teamCollection.find({userId: userId}).toArray();
-        // then, check 
-        if(!userTeams || userTeams.length === 0) throw `No teams found for userId: ${userId}`;
-        // convert id fields to strings
+        //fetch all teams from user
+        let userTeams = await teamCollection.find({ userId: userId }).toArray();
+        //convert _id to string
         userTeams.forEach(team => {
             team._id = team._id.toString();
         });
+
         return userTeams;
-
-    }catch(error){
-        console.error(error.message);
-    };
+    } catch (error) {
+        console.error('Error fetching teams for user:', error.message || error);
+        throw error;
+    }
 };
-
-
-
