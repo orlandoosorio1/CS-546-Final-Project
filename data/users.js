@@ -63,6 +63,27 @@ export const findUserByUsername = async (username) => {
   return user;
 };
 
+export const updateUserTeams = async (userId, teams) => {
+  if (!userId || !ObjectId.isValid(userId)) {
+      throw new Error('Invalid user ID.');
+  }
+  //fetch user collection
+  const userCollection = await users();
+  const updatedInfo = await userCollection.updateOne(
+      { _id: new ObjectId(userId)},
+      //update team  
+      { $set: { teams: teams}}      
+  );
+  //error handling
+  if (updatedInfo.matchedCount === 0) {
+      throw new Error(`No user found with ID: ${userId}`);
+  }
+  if (updatedInfo.modifiedCount === 0) {
+      throw new Error('Failed to update the teams for the user.');
+  }
+  return { updated: true, teams };
+};
+
 export const updateUserProfile = async (username, updateData) => {
   const userCollection = await users();
   const updateInfo = await userCollection.updateOne(
@@ -108,10 +129,8 @@ export const updateWhosThatPokeScore = async (id, newScore) => {
     { $max: { whosThatPokeScore: newScore } }, // Update only if the new score is higher
     { returnDocument: 'after' }
   );
-
-  console.log('Update Result:', updateInfo);
-
-  if (!updateInfo) {
+  
+  if (!updateInfo.value) { 
     throw `Error: Could not update "Who's That Pokémon" score for user with ID '${id}'.`;
   }
 
@@ -128,7 +147,7 @@ export const addTeamToUser = async (id, teamId) => {
     { $addToSet: { teams: teamId } }, // Add the team ID only if it doesn't already exist
     { returnDocument: 'after' }
   );
-  if (!updateInfo) {
+  if (!updateInfo.value) { //set to check updateInfo.value
     throw `Error: Could not add team to user with ID '${id}'.`;
   }
   return await getUserById(id);
@@ -145,7 +164,7 @@ export const triviaTopPlayers = async (limit = 20) => {
   return topPlayers;
 
 };
-export const pokemonTopPlayers = async (limit = 151) => {
+export const pokemonTopPlayers = async (limit = 20) => {
   const userCollection = await users();
   const topPlayers = await userCollection
     .find({}, { projection: { username: 1, whosThatPokeScore: 1 } }) // Select only username and pokemonPoints
