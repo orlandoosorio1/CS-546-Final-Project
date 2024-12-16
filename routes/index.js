@@ -4,7 +4,7 @@ import profileRoutes from './profile.js'; // Routes for user profile functionali
 import triviaRoutes from './trivia.js'; // Routes for trivia game feature
 import pokemonRoutes from './pokemon.js'; // Routes for "Who's That Pokémon" feature
 import encyclopediaRoutes from './encyclopedia.js'; // Routes for Pokémon encyclopedia
-import builderRoutes from './builder.js'; // Routes for Pokémon team builder
+import teambuilderRoutes from './teambuilder.js'; // Routes for Pokémon team builder
 import rankerRoutes from './ranker.js'; // Import the ranker route
 
 const constructorMethod = (app) => {
@@ -14,7 +14,7 @@ const constructorMethod = (app) => {
     app.use('/trivia', triviaRoutes);
     app.use('/pokemon', pokemonRoutes);
     app.use('/encyclopedia', encyclopediaRoutes);
-    app.use('/builder', builderRoutes);
+    app.use('/teambuilder', teambuilderRoutes);
     app.use('/ranker', rankerRoutes); // Add the ranker route
 
     app.use('*', (req, res) => {
