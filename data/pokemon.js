@@ -18,6 +18,23 @@ export const getPokemonByName = async (name) => {
         }
     }catch(error){
         console.error(error.message);
+        throw error;
+    }
+}
+
+export const getAllPokemon = async () => {
+    try{
+        let pokemonCollection = await pokemon();
+        let allPokemon = pokemonCollection.find({}).toArray();
+        if(allPokemon && allPokemon.length > 0){
+            return allPokemon;
+        }
+        else{
+            return [];
+        }
+    }catch(error){
+        console.error(error.message);
+        throw error;
     }
 }
 
@@ -35,6 +52,7 @@ export const getPokemonByType = async (type) => {
         }
     }catch(error){
         console.error(error.message);
+        throw error;
     }
 }
 
