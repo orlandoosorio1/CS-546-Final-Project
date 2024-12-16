@@ -63,6 +63,18 @@ export const findUserByUsername = async (username) => {
   return user;
 };
 
+export const updateUserProfile = async (username, updateData) => {
+  const userCollection = await users();
+  const updateInfo = await userCollection.updateOne(
+      { username: username.toLowerCase() },
+      { $set: updateData }
+  );
+  if (!updateInfo.matchedCount || !updateInfo.modifiedCount) {
+      throw new Error('Failed to update profile.');
+  }
+  return await userCollection.findOne({ username: username.toLowerCase() });
+};
+
 export const updateUserTeams = async (userId, teams) => {
   if (!userId || !ObjectId.isValid(userId)) {
       throw new Error('Invalid user ID.');
@@ -81,19 +93,8 @@ export const updateUserTeams = async (userId, teams) => {
   if (updatedInfo.modifiedCount === 0) {
       throw new Error('Failed to update the teams for the user.');
   }
-  return { updated: true, teams };
-};
 
-export const updateUserProfile = async (username, updateData) => {
-  const userCollection = await users();
-  const updateInfo = await userCollection.updateOne(
-      { username: username.toLowerCase() },
-      { $set: updateData }
-  );
-  if (!updateInfo.matchedCount || !updateInfo.modifiedCount) {
-      throw new Error('Failed to update profile.');
-  }
-  return await userCollection.findOne({ username: username.toLowerCase() });
+  return { updated: true, teams };
 };
 
 
@@ -115,25 +116,17 @@ export const updateTriviaScore = async (id, newScore) => {
 
 // Function to update a user's "Who's That Pokémon" score
 export const updateWhosThatPokeScore = async (id, newScore) => {
-  id = help.checkId(id); // Ensure ID is valid
+  id = help.checkId(id);
   newScore = help.checkNumber(newScore, 'newScore');
-
-  // Convert to ObjectId only if needed
-  if (!(id instanceof ObjectId)) {
-    id = new ObjectId(id);
-  }
-
   const userCollection = await users();
   const updateInfo = await userCollection.findOneAndUpdate(
-    { _id: id },
+    { _id: new ObjectId(id) },
     { $max: { whosThatPokeScore: newScore } }, // Update only if the new score is higher
     { returnDocument: 'after' }
   );
-  
-  if (!updateInfo.value) { 
+  if (!updateInfo.value) {
     throw `Error: Could not update "Who's That Pokémon" score for user with ID '${id}'.`;
   }
-
   return await getUserById(id);
 };
 
@@ -147,12 +140,11 @@ export const addTeamToUser = async (id, teamId) => {
     { $addToSet: { teams: teamId } }, // Add the team ID only if it doesn't already exist
     { returnDocument: 'after' }
   );
-  if (!updateInfo.value) { //set to check updateInfo.value
+  if (!updateInfo.value) {
     throw `Error: Could not add team to user with ID '${id}'.`;
   }
   return await getUserById(id);
 };
-
 // Functions to get top players
 export const triviaTopPlayers = async (limit = 20) => {
   const userCollection = await users();
@@ -173,5 +165,3 @@ export const pokemonTopPlayers = async (limit = 20) => {
     .toArray(); // Limit to top `limit` users
   return topPlayers;
 };
-
-
