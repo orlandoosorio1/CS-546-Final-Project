@@ -39,7 +39,7 @@ router.post('/login', async (req, res) => {
 
         // Set session with both _id and username
         req.session.user = { 
-            _id: user._id,           
+            _id: user._id.toString(),           
             username: user.username   
         };
 
