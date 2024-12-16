@@ -25,6 +25,7 @@ Could also allow users to view, edit, and save up to three teams.
         </div>
     </div>
 </main>
+
 <script>
     const pokemonList = document.getElementById('pokemon-list');
     const teamPreview = document.getElementById('team-preview');
@@ -204,10 +205,39 @@ Could also allow users to view, edit, and save up to three teams.
         }
     });
 
-    saveButton.addEventListener('click', () => {
-        console.log('Saved team:', selectedTeam);
-        alert('Team saved successfully!');
-    });
+   saveButton.addEventListener('click', async () => {
+    if (selectedTeam.length === 0) {
+        alert('Error: No Pokémon selected');
+        return;
+    }
 
+
+    try {
+        const response = await fetch('/teambuilder/save-team', {  
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                userId: '{{user._id}}',  
+                team: selectedTeam
+            }),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            alert(`Error: ${errorData.error}`);
+            return;
+        }
+
+        const result = await response.json();
+        alert('Team saved successfully!');
+        console.log('Saved team:', result.team);
+
+        selectedTeam = [];
+        updateTeamPreview();
+    } catch (error) {
+        console.error('Error saving team', error);
+        alert(`Failed to save the team. User ID is ${_id}`);
+    }
+});
     fetchPokemonData();
 </script>
