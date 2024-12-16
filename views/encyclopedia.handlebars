@@ -3,35 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pokémon Encyclopedia</title>
+    <title>{{title}}</title>
     <link rel="stylesheet" href="/public/css/encyclopedia.css">
 </head>
 <body>
     <div class="encyclopedia">
         <h1 class="page-title">Pokémon Encyclopedia</h1>
-        <div class="search-container">
-            <input id="search-input" class="search-bar" type="text" placeholder="Search Pokémon by name..." />
-            <button id="search-button" class="search-button">Search</button>
-            <select id="type-filter" class="filter-dropdown">
-                <option value="">Filter by Type</option>
-                <option value="normal">Normal</option>
-                <option value="fire">Fire</option>
-                <option value="water">Water</option>
-                <option value="grass">Grass</option>
-                <option value="electric">Electric</option>
-                <option value="ice">Ice</option>
-                <option value="fighting">Fighting</option>
-                <option value="poison">Poison</option>
-                <option value="ground">Ground</option>
-                <option value="flying">Flying</option>
-                <option value="psychic">Psychic</option>
-                <option value="bug">Bug</option>
-                <option value="rock">Rock</option>
-                <option value="ghost">Ghost</option>
-                <option value="dragon">Dragon</option>
-            </select>
-        </div>
+        <form method="GET" class="search-container">
+            <input
+                id="search-input"
+                class="search-bar"
+                type="text"
+                name="name"
+                value="{{query}}"
+                placeholder="Search Pokémon by name..."
+            />
+            <button id="search-button" class="search-button" type="submit">Search</button>
+        </form>
         <div id="results-grid" class="results-grid">
+            {{#each pokemonList}}
+            <a href="/encyclopedia/{{this.name}}">
+                <div class="pokemon-card">
+                    <h3>{{this.name}}</h3>
+                </div>
+            </a>
+            {{else}}
+            <p>No Pokémon found.</p>
+            {{/each}}
         </div>
     </div>
     <script src="/public/js/encyclopedia.js"></script>
