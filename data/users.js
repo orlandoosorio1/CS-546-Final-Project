@@ -94,17 +94,27 @@ export const updateTriviaScore = async (id, newScore) => {
 
 // Function to update a user's "Who's That Pokémon" score
 export const updateWhosThatPokeScore = async (id, newScore) => {
-  id = help.checkId(id);
+  id = help.checkId(id); // Ensure ID is valid
   newScore = help.checkNumber(newScore, 'newScore');
+
+  // Convert to ObjectId only if needed
+  if (!(id instanceof ObjectId)) {
+    id = new ObjectId(id);
+  }
+
   const userCollection = await users();
   const updateInfo = await userCollection.findOneAndUpdate(
-    { _id: new ObjectId(id) },
+    { _id: id },
     { $max: { whosThatPokeScore: newScore } }, // Update only if the new score is higher
     { returnDocument: 'after' }
   );
-  if (!updateInfo.value) {
+
+  console.log('Update Result:', updateInfo);
+
+  if (!updateInfo) {
     throw `Error: Could not update "Who's That Pokémon" score for user with ID '${id}'.`;
   }
+
   return await getUserById(id);
 };
 
@@ -118,7 +128,7 @@ export const addTeamToUser = async (id, teamId) => {
     { $addToSet: { teams: teamId } }, // Add the team ID only if it doesn't already exist
     { returnDocument: 'after' }
   );
-  if (!updateInfo.value) {
+  if (!updateInfo) {
     throw `Error: Could not add team to user with ID '${id}'.`;
   }
   return await getUserById(id);
@@ -135,7 +145,7 @@ export const triviaTopPlayers = async (limit = 20) => {
   return topPlayers;
 
 };
-export const pokemonTopPlayers = async (limit = 20) => {
+export const pokemonTopPlayers = async (limit = 151) => {
   const userCollection = await users();
   const topPlayers = await userCollection
     .find({}, { projection: { username: 1, whosThatPokeScore: 1 } }) // Select only username and pokemonPoints
