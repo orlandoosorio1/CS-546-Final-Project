@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
 // Login Handler - Authenticate user credentials and start a session
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
-    // Ensure both fields are provided and valid
+
     try {
         help.checkString(username, 'Username');
         help.checkString(password, 'Password');
@@ -29,13 +29,20 @@ router.post('/login', async (req, res) => {
             activePanel: 'login',
         });
     }
+
     try {
         const user = await usersData.findUserByUsername(username); // Fetch user
         const passwordMatch = await bcrypt.compare(password, user.password); // Validate password
         if (!passwordMatch) {
             throw 'Error: Invalid username or password.';
         }
-        req.session.user = { username: user.username }; // Set session
+
+        // Set session with both _id and username
+        req.session.user = { 
+            _id: user._id,           
+            username: user.username   
+        };
+
         res.redirect('/home'); // Redirect to home on success
     } catch (error) {
         console.error('Login error:', error);
@@ -47,6 +54,7 @@ router.post('/login', async (req, res) => {
         });
     }
 });
+
 
 // Sign-Up Handler - Create a new user and start a session
 router.post('/signup', async (req, res) => {
