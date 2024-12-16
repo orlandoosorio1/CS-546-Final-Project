@@ -1,86 +1,153 @@
 <main class="pokemon-who-quiz-container">
     <link rel="stylesheet" href="/public/css/pokemonquiz.css">
 
-    <h1>Who's That Pokémon?</h1>
-    <p>Can you guess the Pokémon based on its silhouette?</p>
-    <div class="pokemon-image-container">
-        <!-- Background Image -->
-        <img 
-            src="/public/images/whopoke2.png" 
-            alt="Background Image" 
-            class="pokemon-back"
-        />
+    <div class="quiz-layout">
+        <div class="quiz-section">
+            <h1>Who's That Pokémon?</h1>
+            <p>Can you guess the Pokémon based on its silhouette?</p>
+            <div class="pokemon-image-container">
+                <!-- Background -->
+                <img 
+                    src="/public/images/whopoke2.png" 
+                    alt="Background Image" 
+                    class="pokemon-back"
+                />
 
-        <!-- Silhouette Image -->
-        <img 
-            id="pokemonSilhouette" 
-            src="{{silhouetteUrl}}" 
-            alt="Pokémon Silhouette" 
-            class="pokemon-silhouette"
-        />
+                <!-- Silhouette -->
+                <img 
+                    id="pokemonSilhouette" 
+                    src="{{silhouetteUrl}}" 
+                    alt="Pokémon Silhouette" 
+                    class="pokemon-silhouette"
+                />
+            </div>
+
+            <!-- Quiz Answer Form -->
+            <form id="pokemonAnswerForm" class="pokemon-answer-form" onsubmit="return false;">
+                <label for="pokemonGuess" class="pokemon-guess-label">Your Answer:</label>
+                <input 
+                    type="text" 
+                    id="pokemonGuess" 
+                    name="pokemonGuess" 
+                    placeholder="Enter Pokémon Name" 
+                />
+                <button type="button" id="submitGuess" class="submit-button">Submit</button>
+            </form>
+
+            <div id="resultMessage" class="result-message"></div>
+        </div>
+
+        <!-- Right: Score Section -->
+        <div class="score-section">
+            <h2>Score</h2>
+            <p id="correctScore">Correct: 0</p>
+            <p id="totalScore">Question # 1</p>
+        </div>
     </div>
-
-    <!-- Quiz Answer Form -->
-    <form id="pokemonAnswerForm" class="pokemon-answer-form">
-        <label for="pokemonGuess" class="pokemon-guess-label">Your Answer:</label>
-        <input 
-            type="text" 
-            id="pokemonGuess" 
-            name="pokemonGuess" 
-            placeholder="Enter Pokémon Name" 
-            >
-        <button type="button" id="submitGuess" class="submit-button">Submit</button>
-    </form>
-
-    <div id="resultMessage" class="result-message"></div>
-    <button id="playAgainButton" class="play-again-button" style="display: none;">Play Again</button>
 </main>
 
+<script>
+let correctPokemon = ''; // Current Pokémon name
+let correctGuesses = 0; // Tracks total correct guesses
+let question = 1; // Current question
+let askedPokemon = new Set(); // Tracks Pokémon that have been asked
 
-<script type="module">
-    let correctPokemon = '';
+const pokemonSilhouette = document.getElementById('pokemonSilhouette');
+const pokemonGuessInput = document.getElementById('pokemonGuess');
+const submitGuessButton = document.getElementById('submitGuess');
+const resultMessage = document.getElementById('resultMessage');
+const correctScoreElement = document.getElementById('correctScore');
+const totalScoreElement = document.getElementById('totalScore');
 
-    const pokemonSilhouette = document.getElementById('pokemonSilhouette');
-    const pokemonGuessInput = document.getElementById('pokemonGuess');
-    const submitGuessButton = document.getElementById('submitGuess');
-    const resultMessage = document.getElementById('resultMessage');
-    const playAgainButton = document.getElementById('playAgainButton');
+// Function to save the score to the database
+const saveScoreToDatabase = async (whosThatPokeScore) => {
+  try {
+    const response = await fetch('/pokemon/save-score', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ whosThatPokeScore }), // Send score only
+    });
 
-    // Fetch and display a random Pokémon
-    const fetchRandomPokemon = async () => {
-        try {
-            const randomId = Math.floor(Math.random() * 151) + 1; // Original 151 Pokémon
-            const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomId}`);
-            const pokemonData = await response.json();
+    if (response.ok) {
+      console.log('Score saved successfully.');
+    } else {
+      const errorData = await response.json();
+      console.error('Failed to save score:', errorData.error);
+    }
+  } catch (error) {
+    console.error('Error saving score:', error);
+  }
+};
 
-            correctPokemon = pokemonData.name.toLowerCase();
-            pokemonSilhouette.src = pokemonData.sprites.front_default;
 
-            pokemonSilhouette.style.filter = 'brightness(0%)';
-            resultMessage.textContent = '';
-            resultMessage.style.color = '';
-            playAgainButton.style.display = 'none';
-        } catch (error) {
-            console.error('Error fetching Pokémon:', error);
-        }
-    };
-
-    // Check the user's guess
-    const checkGuess = () => {
-        const userGuess = pokemonGuessInput.value.trim().toLowerCase();
-        if (userGuess === correctPokemon) {
-            resultMessage.textContent = 'Correct! 🎉';
-            resultMessage.style.color = 'green';
+// Fetch and display a random Pokémon
+const fetchRandomPokemon = async () => {
+    try {
+        // Check if all Pokémon have been asked
+        if (askedPokemon.size >= 20) {
+            resultMessage.textContent = `Quiz Complete! 🎉 You scored ${correctGuesses} out of 20!`;
+            resultMessage.style.color = 'blue';
+            submitGuessButton.disabled = true;
+            pokemonGuessInput.disabled = true;
             pokemonSilhouette.style.filter = 'none';
-            playAgainButton.style.display = 'block';
-        } else {
-            resultMessage.textContent = 'Wrong! Try again.';
-            resultMessage.style.color = 'red';
+
+            // Automatically save the score to the database
+            await saveScoreToDatabase(correctGuesses);
+
+            return;
         }
-    };
-    submitGuessButton.addEventListener('click', checkGuess);
-    playAgainButton.addEventListener('click', fetchRandomPokemon);
 
-    fetchRandomPokemon();
+        // Increment the question number only after the previous question's delay
+        totalScoreElement.textContent = `Question #${question++}`;
+
+        let randomId;
+        do {
+            randomId = Math.floor(Math.random() * 151) + 1; // Random ID between 1 and 151
+        } while (askedPokemon.has(randomId));
+
+        askedPokemon.add(randomId); // Add the Pokémon to the set of asked Pokémon
+
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomId}`);
+        const pokemonData = await response.json();
+
+        // Set up the current Pokémon
+        correctPokemon = pokemonData.name.toLowerCase();
+        pokemonSilhouette.src = pokemonData.sprites.front_default;
+
+        pokemonSilhouette.style.filter = 'brightness(0%)'; // Apply silhouette effect
+        resultMessage.textContent = '';
+        resultMessage.style.color = '';
+        pokemonGuessInput.value = ''; // Clear input
+        pokemonGuessInput.disabled = false; // Enable input
+        submitGuessButton.disabled = false; // Enable submit button
+    } catch (error) {
+        console.error('Error fetching Pokémon:', error);
+    }
+};
+
+// Check the user's guess
+const checkGuess = () => {
+    const userGuess = pokemonGuessInput.value.trim().toLowerCase();
+    pokemonSilhouette.style.filter = 'none'; // Reveal the Pokémon
+    pokemonGuessInput.disabled = true; // Disable input after submission
+    submitGuessButton.disabled = true; // Disable the submit button
+
+    if (userGuess === correctPokemon) {
+        correctGuesses++; // Increment correct guesses
+        resultMessage.textContent = `Correct! 🎉 It's ${correctPokemon.charAt(0).toUpperCase() + correctPokemon.slice(1)}!`;
+        resultMessage.style.color = 'green';
+    } else {
+        resultMessage.textContent = `Wrong! 😞 It's ${correctPokemon.charAt(0).toUpperCase() + correctPokemon.slice(1)}.`;
+        resultMessage.style.color = 'red';
+    }
+    correctScoreElement.textContent = `Correct: ${correctGuesses}`;
+
+    // Automatically fetch the next Pokémon after 3 seconds
+    setTimeout(fetchRandomPokemon, 3000);
+};
+
+submitGuessButton.addEventListener('click', checkGuess);
+fetchRandomPokemon();
 </script>
-
