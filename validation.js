@@ -1,6 +1,15 @@
 import {ObjectId} from 'mongodb';
 
 const exportedMethods = {
+  checkList: (list, name) => {
+    if (!Array.isArray(list)) {
+        throw new Error(`${name} must be an array.`);
+    }
+    if (list.length === 0) {
+        throw new Error(`${name} cannot be empty.`);
+    }
+    return list;
+},
   checkId(id) {
     if (!id) throw 'Error: You must provide an id to search for';
     if (typeof id !== 'string') throw 'Error: id must be a string';
@@ -39,7 +48,8 @@ const exportedMethods = {
   },
   checkUsername(username) {
     username = this.checkString(username, 'Username');
-    const usernameRegex = /^[a-zA-Z0-9_]{4,20}$/; // Only alphanumeric and underscores, 4-20 characters
+    const usernameRegex = /^[a-zA-Z0-9_]{4,20}$/; 
+    //only alphanumeric and underscores. Must be between 4-20 characters
     if (!usernameRegex.test(username)) {
       throw 'Error: Username must be 4-20 characters long and contain only letters, numbers, or underscores.';
     }
