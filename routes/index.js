@@ -15,7 +15,7 @@ const constructorMethod = (app) => {
     app.use('/trivia', triviaRoutes);
     app.use('/pokemon', pokemonRoutes);
     app.use('/encyclopedia', encyclopediaRoutes);
-    app.use('/teambuilder', builderRoutes);
+    app.use('/teambuilder', teambuilderRoutes);
     app.use('/ranker', rankerRoutes);
     app.use('/share', shareRoutes); 
 
