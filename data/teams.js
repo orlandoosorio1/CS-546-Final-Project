@@ -107,3 +107,19 @@ export const getTeamsByUserId = async (userId) => {
         throw error;
     }
 };
+
+//To fetch all teams created
+export const getAllTeams = async () => {
+    try {
+        let teamCollection = await teams();
+        let allTeams = await teamCollection.find({}).toArray();
+
+        // Convert _id to string for rendering
+        allTeams.forEach(team => team._id = team._id.toString());
+        
+        return allTeams;
+    } catch (error) {
+        console.error("Error fetching all teams:", error.message);
+        throw error;
+    }
+};
