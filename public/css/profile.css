@@ -117,3 +117,43 @@
 .setup-form button:hover {
     background-color: #FF4B2B;
 }
+
+
+
+
+
+
+
+/* List of Pokemon teams */
+.pokemon-list {
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+    padding: 15px;
+    margin: 20px auto;
+    border: 2px solid #bb5353;
+    border-radius: 10px; 
+    background-color: #ffffff;
+}
+
+.pokemon-list li {
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+    border: 2px solid #FF416C;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.pokemon-list img {
+    margin-top: 5px; 
+    width: 50px; 
+    height: 50px;
+}
+
+
