@@ -1,52 +1,78 @@
+
 .pokemon-Who-quiz-container {
     text-align: center;
     font-family: Arial, sans-serif;
     margin-top: 20px;
-    background-size: cover; 
-    background-position: center; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
     background-repeat: no-repeat;
+    position: relative; 
 }
+
+
+.pokemon-image-container {
+    position: relative; 
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+}
+
 .pokemon-back {
-    position: absolute;
-    top: 50%; 
-    left: 50%; 
-    transform: translate(-50%, -50%); /* Center the image */
-    width: 600px;
-    height: 450px; 
-    object-fit: cover; 
+    position: absolute; 
+    top: 0;
+    left: 100%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    z-index: 1; 
+    border: 5px solid #007bff; 
+    box-sizing: border-box; 
+    border-radius: 10px; 
 }
 
-
-
+/* Silhouette PokÃ©mon image */
 .pokemon-silhouette {
-    position: absolute; 
-    top: 50%; 
-    left: 45%; 
-    transform: translate(-50%, -50%); 
-    width: 300px;
-    height: 300px;
-    object-fit: contain; 
-    filter: brightness(0) contrast(200%); /* Apply silhouette effect */
-    z-index: 2; /* Ensure it layers above the background */
+    position: relative;
+    width: 50%; 
+    left: 32%;
+    max-width: 300px; 
+    height: auto;
+    object-fit: contain;
+    filter: brightness(0) contrast(200%); /* Silhouette effect */
+    z-index: 2; /* Layer it above the background */
 }
 
 .pokemon-answer-form {
     margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
 }
 
 .pokemon-guess-label {
     font-size: 18px;
     margin-right: 10px;
+    margin-top: 20px; 
 }
 
 .pokemon-answer-form input[type="text"] {
     padding: 10px;
     font-size: 16px;
-    width: 300px;
+    width: 90%; 
+    max-width: 300px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    margin-bottom: 10px;
 }
-
 .pokemon-answer-form button {
     padding: 10px 20px;
     font-size: 16px;
@@ -56,6 +82,7 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    width: fit-content;
 }
 
 .pokemon-answer-form button:hover {
