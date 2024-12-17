@@ -30,7 +30,7 @@ router.get('/', async (req, res) => {
   } catch (e){
     //errors if otherwise
     console.error('Error fetching Pokémon:', error.message);
-    res.status(500).send('Error loading the Pokémon Encyclopedia.');
+    res.status(404).send('Error loading the Pokémon Encyclopedia.');
   }
 });
 
@@ -53,7 +53,8 @@ router.get('/:name', async (req, res) => {
         value: s.base_stat
       })),
       height: data.height,
-      weight: data.weight
+      weight: data.weight,
+      moves: data.moves.map(m => m.move.name)
     };
 
     //And render the pokemon details
