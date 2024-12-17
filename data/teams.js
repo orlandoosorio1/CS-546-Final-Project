@@ -123,3 +123,29 @@ export const getAllTeams = async () => {
         throw error;
     }
 };
+
+// Fetch all teams sorted by upvotes
+export const getAllTeamsRanked = async () => {
+    const teamCollection = await teams();
+    return await teamCollection.find({})
+        .sort({ upvotes: -1 }) // Sort teams by upvotes (highest first)
+        .toArray();
+};
+
+// Increment upvotes for a specific team
+export const upvoteTeam = async (teamId) => {
+    if (!ObjectId.isValid(teamId)) throw "Invalid team ID";
+
+    const teamCollection = await teams();
+    const result = await teamCollection.findOneAndUpdate(
+        { _id: new ObjectId(teamId) },
+        { $inc: { upvotes: 1 } }, // Increment the upvote count
+        { returnDocument: 'after' }
+    );
+
+    if (!result.value) throw "Team not found or failed to update upvotes.";
+    return result.value; // Return the updated team
+};
+
+
+
