@@ -17,7 +17,8 @@ Could also allow users to view, edit, and save up to three teams.
                 <span id="page-indicator"></span>
                 <button id="next-page" class="pagination-button">Next</button>
             </div>
-            <h2>Your Team (Max: 6 Pokémon)</h2>
+            <h2>Team Name</h2>
+            <input type="text" id="team-name" placeholder="Enter Team Name" class="team-name-input" />
             <div id="team-preview" class="team-preview">
                 <p>No Pokémon selected yet.</p>
             </div>
@@ -27,6 +28,7 @@ Could also allow users to view, edit, and save up to three teams.
 </main>
 
 <script>
+    const teamNameInput = document.getElementById('team-name');
     const pokemonList = document.getElementById('pokemon-list');
     const teamPreview = document.getElementById('team-preview');
     const saveButton = document.getElementById('save-team');
@@ -211,13 +213,19 @@ Could also allow users to view, edit, and save up to three teams.
         return;
     }
 
+    const teamName = teamNameInput.value.trim();
+    if (!teamName) {
+        alert('Error: Please enter a team name.');
+        return;
+    }
 
     try {
         const response = await fetch('/teambuilder/save-team', {  
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                userId: '{{user._id}}',  
+                userId: '{{user._id}}', 
+                teamName: teamName,     
                 team: selectedTeam
             }),
         });
@@ -232,11 +240,13 @@ Could also allow users to view, edit, and save up to three teams.
         alert('Team saved successfully!');
         console.log('Saved team:', result.team);
 
+        //reset team name
         selectedTeam = [];
+        teamNameInput.value = '';
         updateTeamPreview();
     } catch (error) {
         console.error('Error saving team', error);
-        alert(`Failed to save the team. User ID is ${_id}`);
+        alert('Failed to save the team.');
     }
 });
     fetchPokemonData();
