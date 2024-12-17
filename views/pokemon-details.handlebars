@@ -1,3 +1,4 @@
+
  <!-- pokemon-details.handlebars -->
 <!DOCTYPE html>
 <html lang="en">
@@ -10,15 +11,9 @@
 <body>
     <div class="pokemon-details">
         <h1>{{details.name}}</h1>
+        <p class="description">See stats, types, and moves of each Pokémon!</p>
         <img src="{{details.image}}" alt="{{details.name}}">
         <ul>
-            <!-- Pokemon Stats Displayed when Clicked -->
-            <li><strong>ID:</strong> {{details.id}}</li>
-            <li><strong>Types:</strong> {{#each details.types}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</li>
-            <li><strong>Height:</strong> {{details.height}}</li>
-            <li><strong>Weight:</strong> {{details.weight}}</li>
-            <li><strong>Stats:</strong></li>
-            <ul>
             <!--
                 hp: 
                 attack: 
@@ -27,11 +22,28 @@
                 special-defense: 
                 speed: 
             -->
+            <li><strong>ID:</strong> {{details.id}}</li>
+            <li><strong>Types:</strong> 
+                {{#each details.types}}
+                    {{this}}{{#unless @last}}, {{/unless}}
+                {{/each}}
+            </li>
+            <li><strong>Height:</strong> {{details.height}}</li>
+            <li><strong>Weight:</strong> {{details.weight}}</li>
+            <li><strong>Stats:</strong></li>
+            <ul>
                 {{#each details.stats}}
-                <li>{{this.name}}: {{this.value}}</li>
+                    <li>{{this.name}}: {{this.value}}</li>
+                {{/each}}
+            </ul>
+            <li><strong>Moves:</strong></li>
+            <ul class="moves-list">
+                {{#each details.moves}}
+                    <li>{{this}}</li>
                 {{/each}}
             </ul>
         </ul>
     </div>
 </body>
 </html>
+
