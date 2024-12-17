@@ -1,0 +1,29 @@
+<main class="sharing-container">
+    <h1>Pokémon Team Sharing Page</h1>
+    <p>Explore the creative teams built by users!</p>
+
+    <section class="teams-section">
+        {{#each teams}}
+        <div class="team-card">
+            <h2>Team: {{this.username}}</h2>
+            <ul class="pokemon-list">
+                {{#each this.teams}}
+                <li>
+                    <h3>{{this.teamName}}</h3>
+                    <p>Pokémon:</p>
+                    <ul>
+                        {{#each this.pokemon}}
+                        <li>{{this}}</li>
+                        {{/each}}
+                    </ul>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+        {{else}}
+        <p>No teams found.</p>
+        {{/each}}
+    </section>
+
+    <a href="/home" class="back-to-home">Back to Home</a>
+</main>
