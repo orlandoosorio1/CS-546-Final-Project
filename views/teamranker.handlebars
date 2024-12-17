@@ -1,29 +1,68 @@
-<main class="ranker-container">
-    <h1>Pokémon Team Ranker</h1>
-    <p>Explore the creative teams built by users!</p>
+<h1>{{title}}</h1>
 
-    <section class="teams-section">
+{{#if teams.length}}
+    <ul style="list-style: none; padding: 0;">
         {{#each teams}}
-        <div class="team-card">
-            <h2>Team: {{this.username}}</h2>
-            <ul class="pokemon-list">
-                {{#each this.teams}}
-                <li>
-                    <h3>{{this.teamName}}</h3>
-                    <p>Pokémon:</p>
-                    <ul>
-                        {{#each this.pokemon}}
-                        <li>{{this}}</li>
-                        {{/each}}
-                    </ul>
-                </li>
-                {{/each}}
-            </ul>
-        </div>
-        {{else}}
-        <p>No teams found.</p>
-        {{/each}}
-    </section>
+            <li style="margin-bottom: 20px; border: 1px solid #ddd; padding: 15px; border-radius: 10px;">
+                <h2 style="margin-bottom: 5px;">Team Name: <strong>{{this.name}}</strong></h2>
+                <p style="margin-bottom: 10px;">Created by User ID: {{this.userId}}</p>
+                
+                <h3 style="margin-bottom: 10px;">Pokémon:</h3>
+                <ul style="display: flex; flex-wrap: wrap; gap: 15px; list-style: none; padding: 0;">
+                    {{#each this.pokemon}}
+                        <li style="text-align: center; width: 120px;">
+                            <img src="{{this.image}}" alt="{{this.name}}" style="width: 100px; height: 100px; border: 1px solid #ccc; border-radius: 5px;">
+                            <p style="margin-top: 5px; font-weight: bold;">{{this.name}}</p>
+                        </li>
+                    {{/each}}
+                </ul>
 
-    <a href="/home" class="back-to-home">Back to Home</a>
-</main>
+                <!-- Upvote Section -->
+                <div style="margin-top: 10px;">
+                    <button 
+                        class="upvote-btn" 
+                        data-team-id="{{this._id}}" 
+                        style="cursor: pointer; background: #ffcb05; border: none; padding: 10px; border-radius: 5px;">
+                        👍 Upvote
+                    </button>
+                    <span id="upvote-count-{{this._id}}" style="margin-left: 10px; font-weight: bold;">
+                        {{this.upvotes}} Upvotes
+                    </span>
+                </div>
+            </li>
+        {{/each}}
+    </ul>
+{{else}}
+    <p>No teams have been shared yet.</p>
+{{/if}}
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const upvoteButtons = document.querySelectorAll('.upvote-btn');
+
+        upvoteButtons.forEach(button => {
+            button.addEventListener('click', async () => {
+                const teamId = button.getAttribute('data-team-id');
+                const upvoteCountElement = document.getElementById(`upvote-count-${teamId}`);
+
+                try {
+                    const response = await fetch('/ranker/upvote', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ teamId }),
+                    });
+
+                    const result = await response.json();
+                    if (result.success) {
+                        upvoteCountElement.textContent = `${result.upvotes} Upvotes`;
+                    } else {
+                        alert(`Error: ${result.error}`);
+                    }
+                } catch (error) {
+                    console.error('Error upvoting team:', error);
+                    alert('Failed to upvote the team.');
+                }
+            });
+        });
+    });
+</script>
