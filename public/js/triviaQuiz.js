@@ -1,93 +1,129 @@
+console.log("Inside client js script");
 
-    console.log("Inside client js script");
-    const triviaQuestion = document.getElementById('pokemon-trivia-question');
-    const pokemonGuessInput = document.getElementById('triviaGuess');
-    const submitGuessButton = document.getElementById('submitGuess');
-    const resultMessage = document.getElementById('resultMessage');
-    const playAgainButton = document.getElementById('playAgainButton');
-    // Fetch Pokémon and set up the question
-    const fetchPokemonAndSetQuestion = async () => {
-        try {
-            pokemonGuessInput.value = "";  
-            resultMessage.textContent = ""; 
-            // Fetch Pokémon from the backend
-            let response = await fetch('/trivia/getRandomPokemonByCount', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json' // Tell the server you're sending JSON
-                },
-                body: JSON.stringify({ count: 1 }) // Send the 'count' parameter
-            });
-            let pokemonList = await response.json();
-            if(pokemonList){
-                let pokemon = pokemonList[0];
-                console.log("Data function loaded!");
-                console.log(pokemon);
-                // Extract abilities, types, and moves
-                let abilities = []
-                for(let obj of pokemon.abilities){
-                    abilities.push(obj.ability.name);
-                }
-                console.log(abilities);
-                let types = []
-                for(let obj of pokemon.types){
-                    types.push(obj.type.name);
-                }
-                console.log(types);
-                let moves = []
-                for(let obj of pokemon.moves){
-                    moves.push(obj.moveName);
-                }
-                console.log(moves);
+// Get DOM elements
+const triviaQuestion = document.getElementById('pokemon-trivia-question');
+const pokemonGuessInput = document.getElementById('triviaGuess');
+const submitGuessButton = document.getElementById('submitGuess');
+const resultMessage = document.getElementById('resultMessage');
+const playAgainButton = document.getElementById('playAgainButton');
 
-                // Randomly select a question type
-                let randomNumber = Math.floor(Math.random() * 3);
+// Game state variables
+let correctGuesses = 0;
+let question = 0;
+const totalRounds = 5;
 
-                // Get DOM elements
-               
-                console.log("Reached point before question updates");
-                // Set the trivia question based on the random number
-                if (randomNumber === 0) {
-                    triviaQuestion.textContent = `Can you name one of ${pokemon.name}'s abilities?`;
-                } else if (randomNumber === 1) {
-                    triviaQuestion.textContent = `Can you name one of ${pokemon.name}'s types?`;
-                } else {
-                    triviaQuestion.textContent = `Can you name one of ${pokemon.name}'s moves?`;
-                }
-                console.log("Reached point after question updates");
-                // Define the checkGuess function
-                const checkGuess = () => {
-                    const userGuess = pokemonGuessInput.value.trim().toLowerCase();
-                    if (randomNumber === 0 && abilities.includes(userGuess)) {
-                        resultMessage.textContent = 'Correct! 🎉';
-                        resultMessage.style.color = 'green';
-                        playAgainButton.style.display = 'block';
-                    } else if (randomNumber === 1 && types.includes(userGuess)) {
-                        resultMessage.textContent = 'Correct! 🎉';
-                        resultMessage.style.color = 'green';
-                        playAgainButton.style.display = 'block';
-                    } else if (randomNumber === 2 && moves.includes(userGuess)) {
-                        resultMessage.textContent = 'Correct! 🎉';
-                        resultMessage.style.color = 'green';
-                        playAgainButton.style.display = 'block';
-                    } else {
-                        resultMessage.textContent = 'Wrong! Try again.';
-                        resultMessage.style.color = 'red';
-                    }
-                };
+let currentAnswers = []; // Store correct answers for the current question
 
-                // Add event listeners
-                submitGuessButton.addEventListener('click', checkGuess);
-                playAgainButton.addEventListener('click', fetchPokemonAndSetQuestion);
-            }
-            else{
-                console.log("Data function not returning anything");
-            }
-            
-        } catch (error) {
-            console.error("Error fetching Pokémon:", error);
+// Function to fetch Pokémon and set up a question
+const fetchPokemonAndSetQuestion = async () => {
+    try {
+        if (question >= totalRounds) {
+            // Game over: show final score
+            resultMessage.textContent = `Quiz Complete! 🎉 You scored ${correctGuesses} out of ${totalRounds}.`;
+            resultMessage.style.color = 'blue';
+            playAgainButton.style.display = 'block';
+            submitGuessButton.disabled = true;
+            return;
         }
-    };
 
-    // Ensure the DOM is fully loaded before running the script
-    document.addEventListener('DOMContentLoaded', fetchPokemonAndSetQuestion);
+        // Reset UI for the new question
+        pokemonGuessInput.value = "";
+        resultMessage.textContent = "";
+        resultMessage.style.color = "";
+        playAgainButton.style.display = "none";
+        submitGuessButton.disabled = false;
+
+        // Fetch Pokémon data
+        const response = await fetch('/trivia/getRandomPokemonByCount', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ count: 1 }),
+        });
+        const pokemonList = await response.json();
+
+        if (pokemonList && pokemonList.length > 0) {
+            const pokemon = pokemonList[0];
+            console.log("Fetched Pokémon:", pokemon);
+
+            // Extract abilities, types, and moves
+            const abilities = pokemon.abilities.map(a => a.ability.name.toLowerCase());
+            const types = pokemon.types.map(t => t.type.name.toLowerCase());
+            const moves = pokemon.moves.slice(0, 5).map(m => m.moveName.toLowerCase()); // Limit moves to 5
+
+            // Randomly select a question type
+            const randomNumber = Math.floor(Math.random() * 3);
+            if (randomNumber === 0) {
+                triviaQuestion.textContent = `Can you name one of ${pokemon.name}'s abilities?`;
+                currentAnswers = abilities;
+            } else if (randomNumber === 1) {
+                triviaQuestion.textContent = `Can you name one of ${pokemon.name}'s types?`;
+                currentAnswers = types;
+            } else {
+                triviaQuestion.textContent = `Can you name one of ${pokemon.name}'s moves?`;
+                currentAnswers = moves;
+            }
+
+            console.log("Current answers:", currentAnswers);
+        } else {
+            console.error("No Pokémon data received.");
+        }
+    } catch (error) {
+        console.error("Error fetching Pokémon:", error);
+    }
+};
+
+const saveScoreToDatabase = async (triviaScore) => {
+    try {
+      const response = await fetch('/pokemon/save-score', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ triviaScore }), // Send score only
+      });
+  
+      if (response.ok) {
+        console.log('Score saved successfully.');
+      } else {
+        const errorData = await response.json();
+        console.error('Failed to save score:', errorData.error);
+      }
+    } catch (error) {
+      console.error('Error saving score:', error);
+    }
+  };
+
+// Function to check user's guess
+const checkGuess = () => {
+    const userGuess = pokemonGuessInput.value.trim().toLowerCase();
+
+    if (currentAnswers.includes(userGuess)) {
+        resultMessage.textContent = 'Correct! ';
+        resultMessage.style.color = 'green';
+        correctGuesses++;
+    } else {
+        resultMessage.textContent = `Wrong! Correct answers: ${currentAnswers.join(', ')}.`;
+        resultMessage.style.color = 'red';
+    }
+
+    question++;
+    submitGuessButton.disabled = true; // Disable submit temporarily
+    setTimeout(fetchPokemonAndSetQuestion, 3000); // Load next question after 3 seconds
+};
+
+// Function to reset the game
+const resetGame = async () => {
+    let result = await saveScoreToDatabase((correctGuesses));
+    correctGuesses = 0;
+    question = 0;
+    currentAnswers = [];
+    submitGuessButton.disabled = false;
+    fetchPokemonAndSetQuestion();
+};
+
+// Attach event listeners ONCE
+submitGuessButton.addEventListener('click', checkGuess);
+playAgainButton.addEventListener('click', resetGame);
+
+// Start the game when the DOM is loaded
+document.addEventListener('DOMContentLoaded', fetchPokemonAndSetQuestion);
