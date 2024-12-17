@@ -1,1 +1,37 @@
  <!-- pokemon-details.handlebars -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/public/css/pokemon.css">
+</head>
+<body>
+    <div class="pokemon-details">
+        <h1>{{details.name}}</h1>
+        <img src="{{details.image}}" alt="{{details.name}}">
+        <ul>
+            <!-- Pokemon Stats Displayed when Clicked -->
+            <li><strong>ID:</strong> {{details.id}}</li>
+            <li><strong>Types:</strong> {{#each details.types}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</li>
+            <li><strong>Height:</strong> {{details.height}}</li>
+            <li><strong>Weight:</strong> {{details.weight}}</li>
+            <li><strong>Stats:</strong></li>
+            <ul>
+            <!--
+                hp: 
+                attack: 
+                defense: 
+                special-attack: 
+                special-defense: 
+                speed: 
+            -->
+                {{#each details.stats}}
+                <li>{{this.name}}: {{this.value}}</li>
+                {{/each}}
+            </ul>
+        </ul>
+    </div>
+</body>
+</html>
