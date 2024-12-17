@@ -1,0 +1,114 @@
+.pokemon-quiz-container {
+    position: relative;
+    background: url('/public/images/whosblank.jpg') center center / cover no-repeat;
+    border: 5px solid #ffcb05; 
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 800px;
+    margin: auto;
+    margin-top: 50px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
+}
+
+.pokemon-quiz-container h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: white; 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); 
+    position: relative; 
+    z-index: 2;
+}
+
+.pokemon-quiz-container p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); 
+}
+
+.pokemon-quiz-container img {
+    width: 300px;
+    height: auto;
+    margin-top: 20px;
+    border-radius: 10px;
+    border: 5px solid #ffcb05;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pokemon-quiz-container img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.quiz-image-button {
+    width: 300px; 
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.quiz-image-button:hover {
+    transform: scale(1.05); 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/*pokemon-details: Pokemon Detailed Stats when User clicks on Box*/
+.pokemon-details {
+    background-color: #fef9f5;
+    border: 3px solid #ffcb05;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 400px;
+    margin: 30px auto;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+.pokemon-details h1 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    text-transform: capitalize;
+    color: #2a75bb;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.pokemon-details img {
+    width: 150px;
+    height: auto;
+    margin: 15px auto;
+    display: block;
+    border: 3px solid #ffcb05;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pokemon-details ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.pokemon-details li {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    text-transform: capitalize;
+    font-weight: 500;
+}
+
+.pokemon-details strong {
+    color: #ff5722;
+}
+
+.stats-container {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
