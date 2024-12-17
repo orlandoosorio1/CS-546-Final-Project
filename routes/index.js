@@ -4,7 +4,7 @@ import profileRoutes from './profile.js';
 import triviaRoutes from './trivia.js';
 import pokemonRoutes from './pokemon.js';
 import encyclopediaRoutes from './encyclopedia.js';
-import builderRoutes from './teambuilder.js';
+import teambuilderRoutes from './teambuilder.js';
 import rankerRoutes from './ranker.js';
 import shareRoutes from './share.js';
 
