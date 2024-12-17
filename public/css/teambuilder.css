@@ -118,3 +118,11 @@
 .save-button:hover {
     background-color: #e6b800;
 }
+.team-name-input {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
